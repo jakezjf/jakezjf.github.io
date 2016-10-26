@@ -5,7 +5,6 @@ subtitle:   "Freemarker"
 date:       2015-04-14 
 author:     "JianFeng"
 header-img: ""
-catalog: true
 tags:
     - Freemarker
 ---
