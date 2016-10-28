@@ -26,27 +26,26 @@ tags:
 
 Iterator 接口代码：
 
-<pre><code>
-package java.util;
 
-public interface Iterator<E> {
-    /**
-     * 检查序列中是否还有元素
-     */
-    boolean hasNext();
+	package java.util;
+	
+	public interface Iterator<E> {
+	    /**
+	     * 检查序列中是否还有元素
+	     */
+	    boolean hasNext();
+	
+	    /**
+	     * 获取序列下一个元素
+	     */
+	    E next();
+	
+	    /**
+	     * 删除序列中当前元素
+	     */
+	    void remove();
+	}
 
-    /**
-     * 获取序列下一个元素
-     */
-    E next();
-
-    /**
-     * 删除序列中当前元素
-     */
-    void remove();
-}
-
-</code></pre>
 
 Java中的Iterator功能比较简单，并且只能单向移动：
 
@@ -58,125 +57,103 @@ Java中的Iterator功能比较简单，并且只能单向移动：
 
 4.使用remove()将迭代器新返回的元素删除。
 
-### ArrayList 中 iterator 的实现
+## ArrayList 中 iterator 的实现
+
 Java集合类库将集合的接口与实现分离。同样的接口，可以有不同的实现。Java集合类的基本接口是Collection接口，而Collection接口必须实现Iterator接口。
 
-<pre><code>
-package java.lang;
+	package java.lang;
+	
+	import java.util.Iterator;
+	
+	public interface Iterable<T> {
+	
+	    /**
+	     * Returns an iterator over a set of elements of type T.
+	     *
+	     * @return an Iterator.
+	     */
+	    Iterator<T> iterator();
+	}
 
-import java.util.Iterator;
-
-public interface Iterable<T> {
-
-    /**
-     * Returns an iterator over a set of elements of type T.
-     *
-     * @return an Iterator.
-     */
-    Iterator<T> iterator();
-}
-
-</code></pre>
 
 ArrayList 通过实现Collection接口，实现iterator()方法，通过返回iterator()方法返回 Itr 内部类
 
-<pre><code>
-public Iterator<E> iterator() {
-        return new Itr();
-}
-</code></pre>
+	public Iterator<E> iterator() {
+	        return new Itr();
+	}
 
 Itr 实现 Iterator接口，
 
-
-<pre><code>
-int cursor;           // cursor表示下一个元素的索引位置
-int lastRet = -1;     // lastRet表示上一个元素的索引位置
-int expectedModCount = modCount; //ArrayList不是线程安全的，modCount记录修改次数，expectedModCount初始化为 modCount
- 
-</code></pre>
+	int cursor;           // cursor表示下一个元素的索引位置
+	int lastRet = -1;     // lastRet表示上一个元素的索引位置
+	int expectedModCount = modCount; //ArrayList不是线程安全的，modCount记录修改次数，expectedModCount初始化为 modCount
 
 checkForComodification()方法对修改进行同步检查，一旦发现这个对象的mcount和迭代器中存储的mcount不一样那就抛异常 
 
-<pre><code>
-final void checkForComodification() {
-	if (modCount != expectedModCount)
-		throw new ConcurrentModificationException();
-}
- 
-</code></pre>
+	final void checkForComodification() {
+		if (modCount != expectedModCount)
+			throw new ConcurrentModificationException();
+	}
 
 hasNext()方法通过 cursor 是否与 size(长度)相对，判断是否存在下一个元素
 
-<pre><code>
-public boolean hasNext() {
-	return cursor != size;
-}
- 
-</code></pre>
+	public boolean hasNext() {
+		return cursor != size;
+	}
 
 next() 方法实现比较简单，先返回cursor索引位置处的元素，然后修改cursor、lastRet
 
-<pre><code>
-public E next() {
-	checkForComodification();
-	int i = cursor; //记录索引位置  
-	if (i >= size) //如果获取元素大于集合元素个数，则抛出异常
-		throw new NoSuchElementException();
-	Object[] elementData = ArrayList.this.elementData;  //获取ArrayList元素
-	if (i >= elementData.length)
-		throw new ConcurrentModificationException();
-	cursor = i + 1; //cursor + 1  
-	return (E) elementData[lastRet = i]; //lastRet + 1 且返回cursor处元素  
-}
- 
-</code></pre>
+	public E next() {
+		checkForComodification();
+		int i = cursor; //记录索引位置  
+		if (i >= size) //如果获取元素大于集合元素个数，则抛出异常
+			throw new NoSuchElementException();
+		Object[] elementData = ArrayList.this.elementData;  //获取ArrayList元素
+		if (i >= elementData.length)
+			throw new ConcurrentModificationException();
+		cursor = i + 1; //cursor + 1  
+		return (E) elementData[lastRet = i]; //lastRet + 1 且返回cursor处元素  
+	}
 
 remove() 方法调用了ArrayList自身的remove()方法删除lastRet位置元素，让cursor 等于 lastRet
 
-<pre><code>
-public void remove() {
-	if (lastRet < 0)  //当lastRet<0抛出异常
-		throw new IllegalStateException();
-	checkForComodification();
-
-	try {
-		ArrayList.this.remove(lastRet);
-		cursor = lastRet;    //设置cursor为当前被删除元素的位置
-		lastRet = -1;
-		expectedModCount = modCount;
-	} catch (IndexOutOfBoundsException ex) {
-		throw new ConcurrentModificationException();
+	public void remove() {
+		if (lastRet < 0)  //当lastRet<0抛出异常
+			throw new IllegalStateException();
+		checkForComodification();
+	
+		try {
+			ArrayList.this.remove(lastRet);
+			cursor = lastRet;    //设置cursor为当前被删除元素的位置
+			lastRet = -1;
+			expectedModCount = modCount;
+		} catch (IndexOutOfBoundsException ex) {
+			throw new ConcurrentModificationException();
+		}
 	}
-}
- 
-</code></pre>
 
 ### 举个栗子：
 
-<pre><code>
-public class Test {
-
-    public static void main(String[] args){
-        List<Integer> list = new ArrayList<Integer>();
-        for(int i = 0;i < 10;i++ ){
-            list.add(i);
-        }
-        Iterator<Integer> it = list.iterator();  //调用了ArrayList.iterator()方法，返回Iterator
-        while(it.hasNext()){    //hasNext() 判断下一个元素是否存在
-            int i = it.next();
-            System.out.println(i);
-        }
-        it = list.iterator();
-        for(int i = 0;i < 5;i++ ){  //对0~4的元素进行删除
-            it.next();
-            it.remove();
-        }
-        System.out.println(list);  //打印剩下的
-    }
-}
- 
-</code></pre>
+	public class Test {
+	
+	    public static void main(String[] args){
+	        List<Integer> list = new ArrayList<Integer>();
+	        for(int i = 0;i < 10;i++ ){
+	            list.add(i);
+	        }
+	        Iterator<Integer> it = list.iterator();  //调用了ArrayList.iterator()方法，返回Iterator
+	        while(it.hasNext()){    //hasNext() 判断下一个元素是否存在
+	            int i = it.next();
+	            System.out.println(i);
+	        }
+	        it = list.iterator();
+	        for(int i = 0;i < 5;i++ ){  //对0~4的元素进行删除
+	            it.next();
+	            it.remove();
+	        }
+	        System.out.println(list);  //打印剩下的
+	    }
+	}
 
 输出：
 <pre><code>
