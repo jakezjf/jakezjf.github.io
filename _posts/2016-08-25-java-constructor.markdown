@@ -130,7 +130,7 @@ str2 :子类B class
 </code></pre>
 在例子中，类A为B的父类，子类B进行实例化时，将先调用父类A的构造函数，这时str1 = "A class"，str2 = "B class"，然后才调用子类B的构造函数，这时str2 = "子类B class"。调用disp()方法，输出str1 :A class  ，str2 :子类B class。
 
-###子类构造函数调用父类构造函数
+### 子类构造函数调用父类构造函数
 
 class A：
 
