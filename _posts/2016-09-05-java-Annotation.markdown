@@ -29,7 +29,6 @@ tags:
 - @SuppressWarnings 关闭不当的编译器警告信息
 
 ![img](/img/blog/zhujie.jpg)
-![](http://i.imgur.com/plRrE6y.jpg)
 
 ## 基本的语法
 	
