@@ -2,7 +2,7 @@
 layout:     post
 title:      "MySQL配置文件"
 subtitle:   "掌握MySQL配置文件的配置"
-date:       2016-09-13
+date:       2016-09-17
 author:     "JianFeng"
 header-img: ""
 catalog: true
