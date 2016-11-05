@@ -123,7 +123,8 @@ MySQL数据库是按照C:\WINDOWS\my.ini **→** C:\WINDOWS\my.cnf **→** C:\my
 	# 会限制服务器可以处理的SQL语句的复杂性，存储过程的递归深度以及其他内存消耗操作。
 	thread_stack		= 192K
 
-	# 设置服务器应缓存多少线程以供重复使用。当客户端断开连接时，如果线程少于thread_cache_size线程，客户端的线程将放入缓存中。
+	# 设置服务器应缓存多少线程以供重复使用。当客户端断开连接时，如果线程少于thread_cache_size线程，
+	# 客户端的线程将放入缓存中。
 	# 如果可能的话，通过重用从高速缓存取得的线程来满足线程的请求，并且只有当高速缓存为空时，才创建新的线程。
 	# 如果你有很多新的连接，这个变量可以增加以提高性能。在实际线上中，如果服务器每秒有数百个连接请求，
 	# 应将thread_cache_size设置为足够高，以便大多数新连接使用缓存线程。
@@ -197,7 +198,8 @@ MySQL数据库是按照C:\WINDOWS\my.ini **→** C:\WINDOWS\my.cnf **→** C:\my
 	# MySQL每打开一个表，都会读入一些数据到table_open_cache缓存中，
 	# 当MySQL在这个缓存中找不到相应信息时，才会去磁盘上读取。默认值为64。
 	# 假定系统有200个并发连接，则需将此参数设置为200*N(N为每个连接所需的文件描述符数目)；
-	# 当把table_open_cache设置为很大时，如果系统处理不了那么多文件描述符，那么就会出现客户端失效，连接不上。
+	# 当把table_open_cache设置为很大时，如果系统处理不了那么多文件描述符，
+	# 那么就会出现客户端失效，连接不上。
 
 	query_cache_limit = 2M
 	#指定单个查询能够使用的缓冲区大小，默认1M
@@ -219,11 +221,14 @@ MySQL数据库是按照C:\WINDOWS\my.ini **→** C:\WINDOWS\my.cnf **→** C:\my
 
 	innodb_adaptive_max_sleep_delay = 150000
 	# 设置最大的线程延时，允许InnoDB根据当前工作负载自动调整innodb_thread_sleep_delay的值。
-	# 自动调整innodb_thread_sleep_delay值，直到调整到innodb_adaptive_max_sleep_delay选项中指定的最大值。
-	# 此选项在繁忙的系统中使用，并且可以具有16个以上的InnoDB线程。 （在实践中，它对于具有数百或数千个同时连接的MySQL系统是最有价值的。）
+	# 自动调整innodb_thread_sleep_delay值，直到调整到innodb_adaptive_max_sleep_delay
+	# 选项中指定的最大值。
+	# 此选项在繁忙的系统中使用，并且可以具有16个以上的InnoDB线程。 
+	#（在实践中，它对于具有数百或数千个同时连接的MySQL系统是最有价值的。）
 
 	innodb_additional_mem_pool_size = 8M
-	# 设置InnoDB使用存储数据字典信息和其他内部数据结构的内存池大小。当数据库中有很多的表，那么分配的内存越多。如果InnoDB在此池中内存不足，
+	# 设置InnoDB使用存储数据字典信息和其他内部数据结构的内存池大小。当数据库中有很多的表，
+	# 那么分配的内存越多。如果InnoDB在此池中内存不足，
 	# 它会开始从操作系统请求内存，并向MySQL错误日志写入警告消息。默认值为8MB。该参数在MySQL 5.6.3中已弃用。
 
 	innodb_api_bk_commit_interval = 5
@@ -255,7 +260,8 @@ MySQL数据库是按照C:\WINDOWS\my.ini **→** C:\WINDOWS\my.cnf **→** C:\my
 	#可以针对数据量的大小，翻倍增加。
 
 	myisam_sort_buffer_size = 8M
-	# MyISAM设置恢复表之时使用的缓冲区的尺寸，当在REPAIR TABLE或用CREATE INDEX创建索引或ALTER TABLE过程中排序 MyISAM索引分配的缓冲区。
+	# MyISAM设置恢复表之时使用的缓冲区的尺寸，当在REPAIR TABLE或用CREATE INDEX创建索引或
+	# ALTER TABLE过程中排序 MyISAM索引分配的缓冲区。
 
 
 
