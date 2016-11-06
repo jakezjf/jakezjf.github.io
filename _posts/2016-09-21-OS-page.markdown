@@ -1,0 +1,76 @@
+---
+layout:     post
+title:      "操作系统之页面调度算法"
+subtitle:   "实现操作系统中的页面置换算法"
+date:       2016-09-21 
+author:     "JianFeng"
+header-img: ""
+tags:
+    - 操作系统
+    - 置换算法
+    - 页面调度
+---
+
+>本篇将介绍操作系统中的页面置换算法
+
+## 页面置换算法
+
+
+	import java.util.Scanner;
+	import java.util.Stack;
+	
+	/**
+	 * Created by JF 
+	 */
+	public class LRU {
+	
+	    public static Stack<Integer> stack = new Stack<Integer>();
+	
+	    public static int stackDepth = 0;
+	
+	    public static int newYe;
+	
+	    public void setStackDepth(){
+	        Scanner in = new Scanner(System.in);
+	        System.out.print("设置栈的深度:");
+	        while((stackDepth = in.nextInt())<0){
+	            System.out.println("输入错误,请重新输入：");
+	            System.out.print("设置栈的深度:");
+	        }
+	    }
+	
+	    public void lru(int newYe){
+	        if (stack.size() <= stackDepth && stack.search(newYe) != -1){
+	            int temp = stack.get(stack.size() - stack.search(newYe));
+	            stack.remove(stack.size() - stack.search(newYe));
+	            stack.push(temp);
+	        }
+	        else if (stack.size() < stackDepth && stack.search(newYe) == -1){
+	            stack.push(newYe);
+	        }
+	        else if (stack.size() >= stackDepth && stack.search(newYe) == -1){
+	            stack.remove(0);
+	            stack.push(newYe);
+	        }
+	        System.out.println(stack.toString());
+	    }
+	
+	
+	    public static void main(String[] args){
+	        LRU lru = new LRU();
+	        lru.setStackDepth();
+	        Scanner in = new Scanner(System.in);
+	        System.out.print("请输入访问页面(退出请输入-1)：");
+	        while(in.hasNextInt()){
+	            newYe = in.nextInt();
+	            if(newYe == -1){
+	                break;
+	            }
+	            lru.lru(newYe);
+	            System.out.print("请输入访问页面(退出请输入-1)：");
+	        }
+	
+	
+	    }
+	
+	}
