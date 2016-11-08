@@ -188,6 +188,10 @@ MySQL数据库是按照C:\WINDOWS\my.ini **→** C:\WINDOWS\my.cnf **→** C:\my
 
 ## 可选参数
 	
+	# 事务被提交后，其所用使用的undolog可能不再需要，可以使用PurgeThread来回收
+	# 已经分配的undo页，可独立到单独的线程中进行，可以减轻Master Thread工作
+	innodb_purge_threads = 1
+	
 	max_connections = 1000
 	# MySQL的最大连接数，如果服务器的并发连接请求量比较大，建议调高此值，以增加并行连接数量，
 	# 当然这建立在机器能支撑的情况下，因为如果连接数越多，介于MySQL会为每个连接提供连接缓冲区，
