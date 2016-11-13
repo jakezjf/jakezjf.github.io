@@ -15,6 +15,7 @@ tags:
 > 本篇将介绍instanceof的知识
 
 ## instanceof
+
 ### 什么是instanceof ？
 instanceof是java的一种运算符，instanceof运算符是双目运算符，左面的操作元是一个对象，右面是一个类。当左面的对象是右面的类创建的对象时，该运算符运算的结果是tru，否则是false。
 
