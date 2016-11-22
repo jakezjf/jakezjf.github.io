@@ -15,6 +15,7 @@ tags:
 
 ## 页面置换算法
 
+## 代码实现
 
 	import java.util.Scanner;
 	import java.util.Stack;
@@ -71,6 +72,123 @@ tags:
 	        }
 	
 	
+	    }
+	
+	}
+
+
+
+	import java.util.ArrayList;
+	import java.util.Iterator;
+	import java.util.List;
+	import java.util.Scanner;
+	
+	/**
+	 * Created by JF 
+	 */
+	public class FIFO {
+	
+	    private static final int PRO_MEMORY = 3;
+	    private static Page[] pages = new Page[PRO_MEMORY];
+	    private static int countOldPoint ;
+	    private static int count ;
+	    private static int lackTime;
+	    private List<Integer> usePageNumList = new ArrayList<Integer>();
+	
+	    public static void main(String[] args){
+	        System.out.println("--------先进先出算法------------");
+	        FIFO fifo = new FIFO();
+	        fifo.init();
+	        fifo.input();
+	        fifo.running();
+	    }
+	
+	    public  void init(){
+	        for(int i=0;i<pages.length;i++){
+	            pages[i] = new Page();
+	        }
+	    }
+	
+	    public void input(){
+	        System.out.print("请输入页面使用列表,以空格分开:");
+	        Scanner sc = new Scanner(System.in);
+	        String input = sc.nextLine();
+	        String[] inputList = input.split("\\s");
+	        try{
+	            for(String in : inputList){
+	                usePageNumList.add(Integer.valueOf(in));
+	            }
+	        }
+	        catch(Exception e){
+	            System.out.println("输入的必须是数字,请重新开始！！！");
+	            System.exit(0);
+	        }
+	    }
+	
+	    public void running(){
+	        Iterator<Integer> it = usePageNumList.iterator();
+	        //列表置入替换
+	        while(it.hasNext()){
+	            countOldPoint = countOldPoint % PRO_MEMORY;
+	            int inPageId = it.next();
+	            //查找内存中是否有该页面
+	            if(search(inPageId)){
+	                System.out.println("内存中有ID为"+inPageId+" 这个页面,不进行替换");
+	            }
+	            else if(count<PRO_MEMORY){//有空闲内存页
+	                pages[count].setId( (Integer)inPageId);
+	                System.out.println("页号ID:"+pages[count].getId()+" 正在放入内存");
+	                count ++;
+	            }
+	            else{//替换
+	                replace(inPageId);
+	                lackTime ++;
+	                countOldPoint ++;
+	            }
+	            display();
+	        }
+	        System.out.println("缺页次数为:"+lackTime+",缺页率是:"+(float)lackTime/usePageNumList.size());
+	    }
+	
+	    public boolean search(int pageId){
+	        for(int i=0;i<pages.length;i++){
+	            if(pages[i].getId() == pageId){
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	
+	    public void replace(int pageId){
+	        //置换最久的页面
+	        int outPageId = -1;
+	        outPageId = pages[countOldPoint].getId();
+	        pages[countOldPoint].setId(pageId);
+	        System.out.println("页号ID:"+pageId+" 正在放入内存,页号ID:"+outPageId+"被替换出去");
+	    }
+	
+	    public void display(){
+	        System.out.print("当前内存保留的页数是:");
+	        for(Page page : pages){
+	            System.out.print(page.getId()+" ");
+	        }
+	        System.out.println();
+	    }
+	}
+
+
+	/**
+	 * Created by JF 
+	 */
+	public class Page {
+	
+	    private int id = -1;
+	
+	    public int getId() {
+	        return id;
+	    }
+	    public void setId(int id) {
+	        this.id = id;
 	    }
 	
 	}
