@@ -1,0 +1,204 @@
+---
+layout:     post
+title:      "vim基本命令"
+subtitle:   "掌握vim基本命令"
+date:       2016-08-21
+author:     "JianFeng"
+header-img: ""
+catalog: true
+tags:
+    - Linux
+    - vim
+---
+
+> 本篇将介绍vim的基本命令
+
+## vim常用命令
+vim可分为三种模式：一般模式、编辑模式、命令行模式。
+
+
+### 一般模式
+通常使用vi、vim命令打开一个文件，就进入了一般模式，可以使用上下左右键移动光标，还可以使用删除、复制、粘贴等功能。
+
+<table class="table table-bordered table-striped table-condesed">
+
+	<tr>	
+		<td>h、←左箭头</td>
+		<td>光标向左移动一个字符</td>
+	</tr>
+	<tr>	
+		<td>j、↓下箭头</td>
+		<td>光标向下移动一个字符</td>
+	</tr>
+	<tr>	
+		<td>k、↑上箭头</td>
+		<td>光标向上移动一个字符</td>
+	</tr>
+	<tr>	
+		<td>l、→右箭头</td>
+		<td>光标向右移动一个字符</td>
+	</tr>
+	<tr>	
+		<td>ctrl + f</td>
+		<td>屏幕向下移动一页</td>
+	</tr>
+	<tr>	
+		<td>ctrl + b</td>
+		<td>屏幕向上移动一页</td>
+	</tr>
+	<tr>	
+		<td>ctrl + d</td>
+		<td>屏幕向下移动半页</td>
+	</tr>
+	<tr>	
+		<td>ctrl + u</td>
+		<td>屏幕向上移动半页</td>
+	</tr>
+	<tr>	
+		<td>x(数字) + 空格键</td>
+		<td>光标向右移动 x 个字符</td>
+	</tr>
+	<tr>	
+		<td>0(数字)</td>
+		<td>移动到这一行最前面</td>
+	</tr>
+	<tr>	
+		<td>$</td>
+		<td>移动到这一行最后面</td>
+	</tr>
+	<tr>	
+		<td>G</td>
+		<td>移动到文件最后一行</td>
+	</tr>
+	<tr>	
+		<td>x(数字)G</td>
+		<td>移动到该文件第x行</td>
+	</tr>
+	<tr>	
+		<td>gg</td>
+		<td>移动到文件第一行</td>
+	</tr>
+	<tr>	
+		<td>x + Enter键</td>
+		<td>向下移动x行</td>
+	</tr>
+	<tr>	
+		<td>/word</td>
+		<td>word为字符串，向下查找word这个字符串</td>
+	</tr>
+	<tr>	
+		<td>?word</td>
+		<td>word为字符串，向上查找word这个字符串</td>
+	</tr>
+	<tr>	
+		<td>n 、 N</td>
+		<td>n、N一般和/word、?word搭配使用，n是向下查找下一个，N是向上查找</td>
+	</tr>
+	<tr>	
+		<td>:n1,n2s/word1/word2/g</td>
+		<td>n1和n2为数字。在n1和n2行之间查找word1字段，并把word1字段替换为word2</td>
+	</tr>
+	<tr>	
+		<td>:1,$s/word1/word2/g</td>
+		<td>从第一行到最后一行查找word1字段，并替换为word2</td>
+	</tr>
+	<tr>	
+		<td>:1,$s/word1/word2/gc</td>
+		<td>替换时提示用户</td>
+	</tr>
+	<tr>	
+		<td>x，X</td>
+		<td>x是向后删除一个字符，X是向前删除一个字符</td>
+	</tr>
+	<tr>	
+		<td>dd</td>
+		<td>删除一整行</td>
+	</tr>
+	<tr>	
+		<td>ndd</td>
+		<td>n为数字，向下删除n行</td>
+	</tr>
+	<tr>	
+		<td>yy</td>
+		<td>复制光标所在那一行</td>
+	</tr>
+	<tr>	
+		<td>nyy</td>
+		<td>向下复制n行</td>
+	</tr>
+	<tr>	
+		<td>p</td>
+		<td>粘贴</td>
+	</tr>
+	<tr>	
+		<td>u</td>
+		<td>复原前一个操作</td>
+	</tr>
+	<tr>	
+		<td>ctrl + r</td>
+		<td>重做上一个操作</td>
+	</tr>
+</table>
+
+### 编辑模式
+在一般模式下，可使用‘i、I、o、O、a、A、r、R’等任何一个字母进入编辑模式。按下这些见后，底部会出现INSERT或REPLACE等字样。使用Esc键可退出编辑模式，回到一般模式。
+
+<table class="table table-bordered table-striped table-condesed">
+
+	<tr>	
+		<td>i，I</td>
+		<td>i为从目前光标所处位置插入，I在所在行第一个位置插入</td>
+	</tr>
+	<tr>	
+		<td>a，A</td>
+		<td>a为从当前光标的下一个字符处开始插入，A为在所在行最后一个位置插入</td>
+	</tr>
+	<tr>	
+		<td>o，O</td>
+		<td>o为在目前光标下一行处新插入一行，O为在目前光标上一行插入新的一行</td>
+	</tr>
+	<tr>	
+		<td>r，R</td>
+		<td>r只会替换光标所在的那个字符一次，R会一直替换光标所在文字</td>
+	</tr>
+
+</table>
+
+
+### 命令行模式
+在一般模式下，使用‘**:** 、**/**、**?**’中任意一个键，就进入命令行模式。
+
+
+
+<table class="table table-bordered table-striped table-condesed">
+
+	<tr>	
+		<td>:w</td>
+		<td>将文件写入磁盘</td>
+	</tr>
+	<tr>	
+		<td>:q</td>
+		<td>离开vi</td>
+	</tr>
+	<tr>	
+		<td>:q!</td>
+		<td>强制退出不保存</td>
+	</tr>
+	<tr>	
+		<td>:wq</td>
+		<td>写入磁盘后离开vi</td>
+	</tr>
+	<tr>	
+		<td>:w filename</td>
+		<td>另存为一个文件</td>
+	</tr>
+	<tr>	
+		<td>:r filename</td>
+		<td>读入另外一个文件，将文件内容加入到光标后面</td>
+	</tr>
+	<tr>	
+		<td>:set nu</td>
+		<td>显示行号，开启后，每一行前缀显示改行行号</td>
+	</tr>
+
+</table>
