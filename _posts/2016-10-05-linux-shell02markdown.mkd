@@ -1,0 +1,142 @@
+---
+layout:     post
+title:      "Shell的基本命令(一)"
+subtitle:   "掌握Shell基本命令"
+date:       2016-10-05
+author:     "JianFeng"
+header-img: ""
+catalog: true
+tags:
+    - Linux
+    - Shell
+---
+
+> 本篇将介绍Shell的基本命令
+
+## Shell
+
+### Shell创建
+创建shell脚本文件输入：
+
+    #!/bin/bash
+    who
+
+shell脚本中，#用作注释，shell脚本的注释行不会被执行，但shell脚本的第一行是一个特例，#号后接！号，是告诉系统使用哪个shell来运行。
+
+运行shell，发现并不能运行，提示command not found，因为bash shell不能找到脚本文件。
+
+解决方法：
+
+- 将shell所处的文件夹路径添加到PATH环境变量中
+- 使用绝对路径或相对路径执行shell
+
+再次运行，发现没有执行权限，可以使用chmod命令设置文件权限。
+
+chmod +x filename
+
+这时候可以运行了，打印出：
+
+    jf       tty7         2016-10-05 09:01 (:0)
+    jf       pts/2        2016-10-05 09:36 (:0.0)
+    
+### echo命令
+echo命令相当于c语言的printf命令，可以打印字符串。
+
+echo "Hello world"
+
+echo -n "Hello world" 如果想在同一行显示一个文本字符串作为命令输出可是使用 -n 选项。
+
+### 环境变量
+
+shell维护着一组环境变量，可以通过set命令查看。
+
+    BASH=/bin/bash
+    BASHOPTS=checkwinsize:cmdhist:complete_fullquote:expand_aliases:extglob:extquote:force_fignore:interactive_comments:progcomp:promptvars:sourcepath
+    BASH_ALIASES=()
+    BASH_ARGC=()
+    BASH_ARGV=()
+    BASH_CMDS=()
+    BASH_COMPLETION_COMPAT_DIR=/etc/bash_completion.d
+    BASH_LINENO=()
+    BASH_REMATCH=()
+    BASH_SOURCE=()
+    BASH_VERSINFO=([0]="4" [1]="3" [2]="11" [3]="1" [4]="release" [5]="x86_64-pc-linux-gnu")
+    BASH_VERSION='4.3.11(1)-release'
+    CLUTTER_IM_MODULE=xim
+    COLORTERM=mate-terminal
+    COLUMNS=80
+    
+在shell编程中，可使用美元符($)加环境变量名称，可获取环境变量的值。
+
+### 用户变量
+
+shell脚本中，可以定义自己的变量，变量临时存储在shell中。
+
+用户变量要遵守：
+
+- 首个字符必须为字母（a-z，A-Z）。
+- 中间不能有空格，可以使用下划线（_）。
+- 不能使用标点符号。
+- 不能使用bash里的关键字（可用help命令查看保留关键字）。
+- 长度小于等于20
+
+### 美元符($)
+获取变量
+
+### 反引号
+
+反引号可以将shell命令输出赋值给变量。
+    
+    #!/bin/bash
+    var="date"
+    var1=`date`
+    echo "$var"
+    echo "$var1"
+    
+输出：
+
+    date
+    2016年 10月 05日 星期三 10:12:17 CST
+
+var1使用了反引号，引用了date的值。
+
+### 输出重定向
+
+使用 大于号(>) 可进行输出重定向。
+command > outputfile
+
+当目录下存在outputfile重名的文件，那么将把它覆盖掉。
+
+如果不想覆盖怎么办呢？
+
+使用 两个大于号 (>>)  在文件后追加文字。
+
+### 输入重定向
+
+输入重定向和输出重定向正好相反，使用 小于号 (<) 可进行输入重定向。
+
+    wc test.sh
+     2  2 16 test.sh
+    
+使用wc命令，获取test.sh文件的行数，单词数，字数
+
+内联重定向使用 两个小于号 (<<) 
+
+语法：
+    
+    command << marker
+    data
+    marker
+    
+例子：
+
+    wc <<EOF
+    > name 1 1
+    > age 1 1
+    > EOF
+     2  6 17
+    
+
+
+
+
