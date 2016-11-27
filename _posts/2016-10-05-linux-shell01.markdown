@@ -1,0 +1,58 @@
+---
+layout:     post
+title:      "Shell的基本知识"
+subtitle:   "掌握Shell基本知识"
+date:       2016-10-05
+author:     "JianFeng"
+header-img: ""
+catalog: true
+tags:
+    - Linux
+    - Shell
+---
+
+> 本篇将介绍Shell的相关知识
+
+## Shell
+shell是c语言编写的程序，和c语言相比，shell的语言标记方式十分简洁，比c语言编写的程序执行要快、效率更高。在使用Linux中，我们通常使用shell完成工作。Shell既是一种命令语言，又是一种程序设计语言。
+
+### Shell的执行命令方式
+
+- 交互式：解释执行用户指令，用户输入一条命令，shell解释一条命令。
+- 批处理：用户事先写好shell脚本，里面包含很多指令，执行shell，一次把这些命令执行完成，不用一条一条地敲命令。
+
+### 常见的Shell
+常见的shell有bash、sh、csh、ksh等。
+
+#### bash
+bash是Linux标准默认的shell，它具备以下功能：
+
+- 可以使用类似DOS下面的doskey的功能，用方向键查阅和快速输入并修改命令。
+- 自动通过查找匹配的方式给出以某字符串开头的命令。
+- 包含了自身的帮助功能，你只要在提示符下面键入help就可以得到相关的帮助。
+
+#### sh
+sh是Bourne Shell的缩写，sh 是Unix 标准默认的shell。
+
+#### ash
+linux中占用系统资源最小的shell，只有24个内部命令。
+
+#### csh
+csh是linux中比较大的内核，共有52个内部命令，指向/bin/tcsh。
+
+#### ksh
+ksh是korn shell的缩写，该shell最大优点是和大部分商业发行版的ksh完全兼容。
+
+### shell是解释型语言
+程序设计语言分为编译型语言和解释型语言。
+
+C++、C、Java、Pascal都是编译型语言，它们需要将源代码编译为目标代码，才能执行。
+
+解释型语言也被称为脚本语言。解释器读取我们的源代码，并将其转化为目标代码，再由计算机运行。
+
+### shell的通用性
+shell在linux/unix环境下通用，且具有以下特点。
+
+- 简单性：Shell是一个高级语言；通过它，你可以简洁地表达复杂的操作。
+- 可移植性：使用POSIX所定义的功能，可以做到脚本无须修改就可在不同的系统上执行。
+- 开发容易：可以在短时间内完成一个功能强大又妤用的脚本。
