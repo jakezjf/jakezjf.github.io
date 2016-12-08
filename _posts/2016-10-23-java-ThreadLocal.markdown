@@ -1,4 +1,18 @@
+---
+layout:     post
+title:      "java ThreadLocal 用法"
+subtitle:   "ThreadLocal 使用方法及实现"
+date:       2016-10-23
+author:     "JianFeng"
+header-img: ""
+catalog: true
+tags:
+    - java
+    - Thread
+    - 多线程
+---
 
+> 本篇将介绍ThreadLocal 的知识
 
 ## ThreadLocal 
 ThreadLocal从字面上理解，是线程局部变量的意思。查阅许多资料博客，对ThreadLocal的解释是解决多线程程序的并发问题，可以用来解决多线程访问资源时的共享问题，我觉得不是太准确。
