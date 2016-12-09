@@ -174,6 +174,10 @@ get()方法通过 getMap() 方法获取线程的 ThreadLocalMap，每个Thread�
 	
 	}
 	
-上面代码中，多个线程同时操作同一个对象(ThreadExample)，其中有个全局变量 sum ，每个线程都希望每次使用这个 sum 都是它原先的初始值。每次累加线程之间都是隔离的，本线程的累加操作不会影响到其他线程的值。 
+上面代码中，多个线程同时操作同一个对象(ThreadExample)，其中有个全局变量 sum ，每个线程都希望每次使用这个 sum 都是它原先的初始值。每次累加线程之间都是隔离的，本线程的累加操作不会影响到其他线程的值。
+
+## ThreadLocal 内存表示
+
+![img](/img/blog/ThreadLocal1.jpg)
 
 
