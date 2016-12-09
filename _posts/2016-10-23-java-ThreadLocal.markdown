@@ -63,6 +63,8 @@ JDK文档是这样介绍的：
         t.threadLocals = new ThreadLocalMap(this, firstValue);
     }
 
+createMap() 方法可以为 Thread 类创建一个 ThreadLocalMap。
+
 ### remove() 方法
 
 	public void remove() {
@@ -126,7 +128,7 @@ Thread.currentThread() 方法获取当前线程。
         return setInitialValue();
     }
 
-get()方法通过 getMap() 方法获取线程的 ThreadLocalMap，每个Thread对象内部都维护了一个ThreadLocalMap这样一个ThreadLocal的Map，可以存放若干个ThreadLocal。
+get()方法通过 getMap() 方法获取线程的 ThreadLocalMap，每个Thread对象内部都维护了一个ThreadLocalMap这样一个ThreadLocal的Map，可以存放多个ThreadLocal。
 
 看看 Thread 中的代码
 
@@ -136,3 +138,42 @@ get()方法通过 getMap() 方法获取线程的 ThreadLocalMap，每个Thread�
 
 
 从本质上来讲，每个线程都维护了一个 Entry 数组，Entry 中的 key 就是ThreadLocal，value就是我们通过set方法传入的值，当我们想要获取这个值得时候，可以通过 get方法获取。
+
+## ThreadLocal 的使用
+
+	package com.jf.thread;
+	
+	/**
+	 * Created by JF on 2016/10/23.
+	 */
+	public class ThreadExample {
+	
+	    private static final ThreadLocal<Integer> value = new ThreadLocal<Integer>();
+	
+	    public static void main(String[] args){
+	        for(int i = 0;i<10;i++){
+	            new Thread(){
+	                @Override
+	                public void run() {
+	                    ThreadExample.test();
+	                }
+	            }.start();
+	        }
+	    }
+
+	    public static int sum = 0;
+	
+	    public static void test() {
+	        value.set(sum);
+	        System.out.println("线程" + Thread.currentThread() + " 的初始值：" + value.get());
+	        for(int i = 1;i<=100;i++){
+	            value.set(value.get() + i);
+	        }
+	        System.out.println("线程" + Thread.currentThread() + " 的最终值：" + value.get());
+	    }
+	
+	}
+	
+上面代码中，多个线程同时操作同一个对象(ThreadExample)，其中有个全局变量 sum ，每个线程都希望每次使用这个 sum 都是它原先的初始值。每次累加线程之间都是隔离的，本线程的累加操作不会影响到其他线程的值。 
+
+
