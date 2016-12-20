@@ -28,6 +28,7 @@ tags:
 	    this.hardLinksToAvoidGarbageCollection = new LinkedList<Object>();
 	    this.queueOfGarbageCollectedEntries = new ReferenceQueue<Object>();
 	  }
+
 SoftCache对象内部维护一个双链表 **LinkedList** 和一个引用队列 **ReferenceQueue** ，**ReferenceQueue** 限制了双链表的长度，默认为256。
 
 #### removeGarbageCollectedItems() 方法
@@ -42,7 +43,7 @@ SoftCache对象内部维护一个双链表 **LinkedList** 和一个引用队列 
 
 removeGarbageCollectedItems() 将缓存对象中被JVM回收的 value 对象的key删除。
 
-SoftCache 在写缓存之前，会先调用 **removeGarbageCollectedItems()** 方法删除已经被垃圾回收器回收的 key和value ，之后想缓存对象中写入 **SoftEntry **类型的对象（定义在SoftCache的内部，是SoftReference类的子类）。
+SoftCache 在写缓存之前，会先调用 **removeGarbageCollectedItems()** 方法删除已经被垃圾回收器回收的 key和value ，之后想缓存对象中写入 **SoftEntry** 类型的对象（定义在SoftCache的内部，是SoftReference类的子类）。
 
 	private static class SoftEntry extends SoftReference<Object> {
 	    private final Object key;
