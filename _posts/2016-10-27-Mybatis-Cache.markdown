@@ -23,7 +23,7 @@ Mybatis 的 Cache (本地缓存)是十分重要的，Mybatis 默认开启的是�
 
 	localCacheScope=SESSION|STATEMENT     (default = SESSION)
 
-## Mybatis 缓存
+### Mybatis 缓存
 
 在 mybatis 中的 (package org.apache.ibatis.cache) 定义了 Cache 接口，整个缓存系统采用了装饰器模式，cache 包中通过 PerpetualCache 类实现 Cache 接口，来实现数据存储和缓存的基本功能。
 
