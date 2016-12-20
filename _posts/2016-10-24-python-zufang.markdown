@@ -19,13 +19,13 @@ tags:
 打算寒假去实习，租房是件头疼的事，房源很多很多，骗子更是不少，经常逛豆瓣无中介租房小组，感觉质量挺高的，但是租房信息很多，根本看不过来，每天都要花大部分时间找房。突然想到用python写个爬虫，这就能省很多事了，T T
 
 
-### 抓取 html 源代码
+#### 抓取 html 源代码
 
 	def getsource(self,url):
 	        html = requests.get(url)
 	        return html.text
 
-### 获取 url 修改页面参数，存入page_group
+#### 获取 url 修改页面参数，存入page_group
 
 	def changepage(self, url, total_page):
         now_page = int(re.search('start=(\d+)', url, re.S).group(1))
@@ -38,13 +38,13 @@ tags:
         return page_group
 
 
-### 使用正则获取指定标签信息
+#### 使用正则获取指定标签信息
 
 	def find_text(self, source):
 	        everyhose = re.findall('<td class="title">(.*?)</td>', source, re.S)
 	        return everyhose
 
-### 将 eachhouse 数组里每一条记录用正则表达式分离
+#### 将 eachhouse 数组里每一条记录用正则表达式分离
 
 	def getinfo(self, eachhouse):
 	        info = {}
@@ -53,7 +53,7 @@ tags:
 	        return info
 
 
-### 存入文件
+#### 存入文件
 
 	def saveinfo(self, classinfo):
 	        f = open('3.txt', 'a')
@@ -104,8 +104,8 @@ tags:
 	        f.close()
 	
 	    def find_text(self, source):
-	        everyhose = re.findall('<td class="title">(.*?)</td>', source, re.S)
-	        return everyhose
+	        everyhouse = re.findall('<td class="title">(.*?)</td>', source, re.S)
+	        return everyhouse
 	
 	if __name__ == '__main__':
 	
