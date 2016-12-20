@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Mybatis Cache 设计及实现"
+title:      "Mybatis Cache 设计及实现(一)"
 subtitle:   "Mybatis Cache 源码解析"
 date:       2016-10-27
 author:     "JianFeng"
@@ -17,7 +17,7 @@ tags:
 
 ## Mybatis
 
-**Mybatis** 是在java web开发中一个重要的 ORM 框架，Mybatis 支持定制化的 SQL、存储过程以及高级映射的优秀的持久层框架。Mybatis 对 JDBC 进行了封装，避免了复杂的 SQL 语句和一些手动参数。
+**Mybatis** 是在java web开发中一个重要的 ORM 框架，Mybatis 是支持定制化的 SQL、存储过程以及高级映射的优秀的持久层框架。Mybatis 对 JDBC 进行了封装，避免了复杂的 SQL 语句和一些手动参数的设置。
 
 Mybatis 的 Cache (本地缓存)是十分重要的，Mybatis 默认开启的是本地高速缓存，也可以在配置文件中选择开启第二级缓存。
 
@@ -79,11 +79,20 @@ Cache 接口定义了如下方法：
 - ScheduledCache ： 调度缓存，定义 **clearInterval** 属性，定时清空缓存
 - SerializedCache ： 缓存序列化和反序列化存储
 - SoftCache ： 基于软引用实现的缓存管理策略
-- SynchronizedCache ： 同步缓存管理策略，通过 synchronized 关键字实现线程安全
+- SynchronizedCache ： 同步缓存管理策略，通过 **synchronized** 关键字实现线程安全
 - TransactionalCache ： 二级缓存事务管理策略
 - WeakCache ： 基于弱引用实现的缓存管理策略
 
+![img](/img/blog/mybatis/mybatis-cache.jpg)
+
+Mybatis 和大多数持久层框架一样，Mybatis的缓存分为两种：一级缓存、二级缓存
+
+- 一级缓存：又称为本地缓存，是 PerpetualCache 类型的永久缓存。
+- 二级缓存：又叫自定义缓存，实现了Cache接口的类都可以作为二级缓存。
+
 ### PerpetualCache 源码解读
+
+PerpetualCache 类维护了一个HashMap来实现缓存机制，通过 id 作为唯一缓存标识。
 
 	public class PerpetualCache implements Cache {
 	  //id 作为缓存的唯一标识
@@ -262,4 +271,63 @@ BlockingCache 对象内部维护一个 ConcurrentHashMap，使用 ReentrantLock 
 	  public void setTimeout(long timeout) {
 	    this.timeout = timeout;
 	  }  
+	}
+
+### SynchronizedCache 源码解读
+
+从 SynchronizedCache 的源代码可以看出，SynchronizedCache 内的大部分方法都使用了 **synchronized** 关键字修饰，确保了在多线程环境下线程安全。
+
+	public class SynchronizedCache implements Cache {
+	
+	  private Cache delegate;
+	  
+	  public SynchronizedCache(Cache delegate) {
+	    this.delegate = delegate;
+	  }
+	
+	  @Override
+	  public String getId() {
+	    return delegate.getId();
+	  }
+	
+	  @Override
+	  public synchronized int getSize() {
+	    return delegate.getSize();
+	  }
+	
+	  @Override
+	  public synchronized void putObject(Object key, Object object) {
+	    delegate.putObject(key, object);
+	  }
+	
+	  @Override
+	  public synchronized Object getObject(Object key) {
+	    return delegate.getObject(key);
+	  }
+	
+	  @Override
+	  public synchronized Object removeObject(Object key) {
+	    return delegate.removeObject(key);
+	  }
+	
+	  @Override
+	  public synchronized void clear() {
+	    delegate.clear();
+	  }
+	
+	  @Override
+	  public int hashCode() {
+	    return delegate.hashCode();
+	  }
+	
+	  @Override
+	  public boolean equals(Object obj) {
+	    return delegate.equals(obj);
+	  }
+	
+	  @Override
+	  public ReadWriteLock getReadWriteLock() {
+	    return null;
+	  }
+	
 	}
