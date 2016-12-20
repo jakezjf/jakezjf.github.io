@@ -90,7 +90,7 @@ Mybatis 和大多数持久层框架一样，Mybatis的缓存分为两种：一�
 - 一级缓存：又称为本地缓存，是 PerpetualCache 类型的永久缓存。
 - 二级缓存：又叫自定义缓存，实现了Cache接口的类都可以作为二级缓存。
 
-### PerpetualCache 源码解读
+#### PerpetualCache 源码解读
 
 PerpetualCache 类维护了一个HashMap来实现缓存机制，通过 id 作为唯一缓存标识。
 
@@ -168,7 +168,7 @@ PerpetualCache 类维护了一个HashMap来实现缓存机制，通过 id 作为
 **PerpetualCache** 是 Cache 中唯一的一个基础实现，其他10个实现类作为装饰器需要持有另一个缓存对象。
 
 
-### BlockingCache 源码解读
+#### BlockingCache 源码解读
 BlockingCache 对象内部维护一个 ConcurrentHashMap，使用 ReentrantLock 类来保证线程安全。
  
 	public class BlockingCache implements Cache {
@@ -273,7 +273,7 @@ BlockingCache 对象内部维护一个 ConcurrentHashMap，使用 ReentrantLock 
 	  }  
 	}
 
-### SynchronizedCache 源码解读
+#### SynchronizedCache 源码解读
 
 从 SynchronizedCache 的源代码可以看出，SynchronizedCache 内的大部分方法都使用了 **synchronized** 关键字修饰，确保了在多线程环境下线程安全。
 

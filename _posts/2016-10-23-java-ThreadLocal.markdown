@@ -39,17 +39,17 @@ JDK文档是这样介绍的：
 
 假如我们有十位老师，那么每位同学配备一位老师进行计数，这十位同学就能够同时进行比赛了。程序中的sum就相当于每位老师，ThreadLocal 这个类做的就是要为每个线程拷贝一份变量，在线程的生命周期中独自使用这个变量，其它线程对这个线程是不可见的。ThreadLocal设计的初衷是：提供线程内部的局部变量，在本线程内随时随地可取，隔离其他线程。
 
-## ThreadLocal 基本操作
+### ThreadLocal 基本操作
 
 
-### ThreadLocal 构造函数
+#### ThreadLocal 构造函数
 
 	public ThreadLocal() {
     }
 
 构造函数啥也没做
 
-### 初始化方法
+#### 初始化方法
 
 	protected T initialValue() {
         return null;
@@ -57,7 +57,7 @@ JDK文档是这样介绍的：
 
 初始化 value 为 null，如果没有事先调用 set() 方法，直接调用 get() 方法，则该函数会被调用。
 
-### createMap(Thread t, T firstValue) 方法
+#### createMap(Thread t, T firstValue) 方法
 
 	void createMap(Thread t, T firstValue) {
         t.threadLocals = new ThreadLocalMap(this, firstValue);
@@ -65,7 +65,7 @@ JDK文档是这样介绍的：
 
 createMap() 方法可以为 Thread 类创建一个 ThreadLocalMap。
 
-### remove() 方法
+#### remove() 方法
 
 	public void remove() {
          ThreadLocalMap m = getMap(Thread.currentThread());
@@ -76,7 +76,7 @@ createMap() 方法可以为 Thread 类创建一个 ThreadLocalMap。
 通过 getMap() 方法获取线程的ThreadLocalMap，如果不为空，则调用ThreadLocalMap的remove()方法进行删除。
 
 
-### setInitialValue()方法
+#### setInitialValue()方法
 
 	private T setInitialValue() {
         T value = initialValue();
@@ -91,7 +91,7 @@ createMap() 方法可以为 Thread 类创建一个 ThreadLocalMap。
 
 setInitialValue() 方法在 ThreadLocalMap 为空的情况下，会被调用。如果 ThreadLocalMap 为空，会调用 createMap (Thread t, T firstValue) 方法调用，实例化 ThreadLocalMap。
 
-### set()方法
+#### set()方法
 
 	public void set(T value) {
 		Thread t = Thread.currentThread();
@@ -104,7 +104,7 @@ setInitialValue() 方法在 ThreadLocalMap 为空的情况下，会被调用。�
 
 Thread.currentThread() 方法获取当前线程。
 
-### getMap(Thread t) 方法
+#### getMap(Thread t) 方法
 
 	ThreadLocalMap getMap(Thread t) {
         return t.threadLocals;
@@ -112,7 +112,7 @@ Thread.currentThread() 方法获取当前线程。
 
 通过线程参数，获取线程的 ThreadLocalMap。
 
-### get()方法
+#### get()方法
 
 	public T get() {
         Thread t = Thread.currentThread();
@@ -139,7 +139,7 @@ get()方法通过 getMap() 方法获取线程的 ThreadLocalMap，每个Thread�
 
 从本质上来讲，每个线程都维护了一个 Entry 数组，Entry 中的 key 就是ThreadLocal，value就是我们通过set方法传入的值，当我们想要获取这个值得时候，可以通过 get方法获取。
 
-## ThreadLocal 的使用
+### ThreadLocal 的使用
 
 	package com.jf.thread;
 	
@@ -176,7 +176,7 @@ get()方法通过 getMap() 方法获取线程的 ThreadLocalMap，每个Thread�
 	
 上面代码中，多个线程同时操作同一个对象(ThreadExample)，其中有个全局变量 sum ，每个线程都希望每次使用这个 sum 都是它原先的初始值。每次累加线程之间都是隔离的，本线程的累加操作不会影响到其他线程的值。
 
-## ThreadLocal 内存表示
+### ThreadLocal 内存表示
 
 ![img](/img/blog/ThreadLocal1.jpg)
 
