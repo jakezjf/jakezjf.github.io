@@ -1,9 +1,9 @@
 {
-    "name": "hux-blog",
-    "title": "Hux Blog",
+    "name": "JianFeng-blog",
+    "title": "JianFeng Blog",
     "author": "Hux <huxpro@gmail.com>",
     "version": "1.7.0",
-    "homepage": "http://huxpro.github.io",
+    "homepage": "http://jakezjf.github.io",
     "repository": {
         "type": "git",
         "url": "https://github.com/jakezjf/jakezjf.github.io"
