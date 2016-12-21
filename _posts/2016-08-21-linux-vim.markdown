@@ -17,7 +17,7 @@ tags:
 vim可分为三种模式：一般模式、编辑模式、命令行模式。
 
 
-### 一般模式
+#### 一般模式
 通常使用vi、vim命令打开一个文件，就进入了一般模式，可以使用上下左右键移动光标，还可以使用删除、复制、粘贴等功能。
 
 <table class="table table-bordered table-striped table-condesed">
@@ -140,7 +140,7 @@ vim可分为三种模式：一般模式、编辑模式、命令行模式。
 	</tr>
 </table>
 
-### 编辑模式
+#### 编辑模式
 在一般模式下，可使用‘i、I、o、O、a、A、r、R’等任何一个字母进入编辑模式。按下这些见后，底部会出现INSERT或REPLACE等字样。使用Esc键可退出编辑模式，回到一般模式。
 
 <table class="table table-bordered table-striped table-condesed">
@@ -165,7 +165,7 @@ vim可分为三种模式：一般模式、编辑模式、命令行模式。
 </table>
 
 
-### 命令行模式
+#### 命令行模式
 在一般模式下，使用‘**:** 、**/**、**?**’中任意一个键，就进入命令行模式。
 
 
