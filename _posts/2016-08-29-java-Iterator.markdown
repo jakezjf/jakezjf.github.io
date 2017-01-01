@@ -14,15 +14,15 @@ tags:
 
 > 本篇将介绍Iterator 的知识
 
-## Iterator （迭代器）
+### Iterator （迭代器）
 
-### 为什么要使用迭代器 ？
+#### 为什么要使用迭代器 ？
 对于任何容器，我们不可避免的是对它进行遍历、增加和删除的操作。那么我们使用不同的容器，必须对容器的确切类型进行编程。不同的容器有不同的数据结构，因此每个不同类型的容器有不同的Iterator迭代器，迭代器是用来遍历Collection子类的各个元素，java封装了这些数据结构，开发人员不需要知道内部具体怎么实现，仅当你想要遍历容器中的各个元素时你必须用collection.iterator()返回相应的迭代器，然后通过迭代器访问每一个元素。
 
-### Iterator 定义
+#### Iterator 定义
 迭代器是一种设计模式，它能够遍历对象并选择序列中的对象，使用者不需要了解该序列底层的结构(例如List、Set)，迭代器的创建代价较小，通常被称为轻量级对象。
 
-### Iterator 的功能
+#### Iterator 的功能
 
 Iterator 接口代码：
 
@@ -57,7 +57,7 @@ Java中的Iterator功能比较简单，并且只能单向移动：
 
 4.使用remove()将迭代器新返回的元素删除。
 
-## ArrayList 中 iterator 的实现
+### ArrayList 中 iterator 的实现
 
 Java集合类库将集合的接口与实现分离。同样的接口，可以有不同的实现。Java集合类的基本接口是Collection接口，而Collection接口必须实现Iterator接口。
 
@@ -132,7 +132,7 @@ remove() 方法调用了ArrayList自身的remove()方法删除lastRet位置元�
 		}
 	}
 
-### 举个栗子：
+#### 举个栗子：
 
 	public class Test {
 	
