@@ -40,7 +40,8 @@ SQL 、AbstractSQL 、SelectBuilder 和 SqlBuilder 这几个类都在 **package 
 
 	}
 
-SelectBuilder 中将构造器私有化，防止被外部实例化。SelectBuilder 中定义了一个成员变量 ThreadLocal<T> 类，静态初始化执行 **BEGIN() 方法** 。
+SelectBuilder 中将构造器私有化，防止被外部实例化。SelectBuilder 中定义了一个成员变量 ThreadLocal<T> 类，静态初始化执行 **BEGIN()** 方法 。
+
 
 ##### RESET() 方法
 
