@@ -35,10 +35,10 @@ Mybatis 是常用的 java ORM 框架，Mybatis实现了一些数据库操作的�
 
 构造动态SQL的相关类有 SQL 、AbstractSQL 、SelectBuilder 和SqlBuilder 等。在 Mybatis3.0以上版本，SelectBuilder 和 SqlBuilder 两个类被废弃了。主要由 **SQL** 和 **AbstractSQL** 实现构造动态SQL。
 
-### 源码解析
+## 源码解析
 SQL 、AbstractSQL 、SelectBuilder 和 SqlBuilder 这几个类都在 **package org.apache.ibatis.jdbc** 包下
 
-#### SelectBuilder
+### SelectBuilder
 首先来看看 SelectBuilder 的实现
 
 #### 成员变量和构造器
@@ -146,10 +146,10 @@ SelectBuilder 中将构造器私有化，防止被外部实例化。SelectBuilde
 
 该方法用来获取构造的动态 SQL 语句，并将调用 **RESET()** 方法，将其重置。
 
-#### SelectBuilder
+### SelectBuilder
 SelectBuilder 的实现和 SelectBuilder 类似
 
-#### SQL 、AbstractSQL 
+### SQL 、AbstractSQL 
 SQL 类继承了 AbstractSQL 类，并重写了 **getSelf() 方法** 
 
 ##### getSelf() 方法
