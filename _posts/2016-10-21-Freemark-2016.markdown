@@ -2,9 +2,13 @@
 layout:     post
 title:      "Freemarker"
 subtitle:   "Freemarker"
-date:       2016-04-14 
+date:       2016-10-21 
 author:     "JianFeng"
 header-img: ""
 tags:
     - Freemarker
 ---
+
+>本篇将介绍模板框架Freemarker的使用
+
+

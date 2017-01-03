@@ -8,7 +8,6 @@ header-img: ""
 catalog: true
 tags:
     - 设计模式
-    - 单例模式
 ---
 
 > 本篇将介绍Singleton 单例模式的相关知识
