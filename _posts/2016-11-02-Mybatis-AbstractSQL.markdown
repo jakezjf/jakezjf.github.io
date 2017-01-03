@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Mybatis SQL构造器设计与实现"
+title:      "Mybatis 构造动态SQL语句功能的设计与实现"
 subtitle:   "Mybatis AbstractSQL 源码解析"
 date:       2016-11-02
 author:     "JianFeng"
@@ -11,7 +11,7 @@ tags:
     - mybatis
 ---
 
-> 本篇将介绍 Mybatis AbstractSQL 的相关知识
+> 本篇将介绍 Mybatis 构造动态SQL语句 的相关知识
 
 ## SQL语句拼接
 在之前学习 JDBC 过程中，经常会遇到SQL语句的拼接问题，在Java代码中嵌入SQL是最讨厌的事情之一。
@@ -478,4 +478,123 @@ SQLStatement 内部为每个 SQL 关键字(例如：select、join、where、havi
 sqlClause() 方法中的参数 SafeAppendable 对象持有 **Appendable** ，Appendable 接口有许多实现类，例如：StringBuffer 、Writer 、PrintStream 等，可以满足多种 io 方式的需求。
 
 keyword 是 SQL 语句的关键字。parts 该 keyword 下的条件语句。open 和 close 一般作为区分，例如：where(),open 和 close 分别相当于 **(** 和 **)**，conjunction 连接。
+
+
+##### sql(Appendable a) 方法
+
+
+    private String selectSQL(SafeAppendable builder) {
+      if (distinct) {
+        sqlClause(builder, "SELECT DISTINCT", select, "", "", ", ");
+      } else {
+        sqlClause(builder, "SELECT", select, "", "", ", ");
+      }
+
+      sqlClause(builder, "FROM", tables, "", "", ", ");
+      sqlClause(builder, "JOIN", join, "", "", "\nJOIN ");
+      sqlClause(builder, "INNER JOIN", innerJoin, "", "", "\nINNER JOIN ");
+      sqlClause(builder, "OUTER JOIN", outerJoin, "", "", "\nOUTER JOIN ");
+      sqlClause(builder, "LEFT OUTER JOIN", leftOuterJoin, "", "", "\nLEFT OUTER JOIN ");
+      sqlClause(builder, "RIGHT OUTER JOIN", rightOuterJoin, "", "", "\nRIGHT OUTER JOIN ");
+      sqlClause(builder, "WHERE", where, "(", ")", " AND ");
+      sqlClause(builder, "GROUP BY", groupBy, "", "", ", ");
+      sqlClause(builder, "HAVING", having, "(", ")", " AND ");
+      sqlClause(builder, "ORDER BY", orderBy, "", "", ", ");
+      return builder.toString();
+    }
+
+    private String insertSQL(SafeAppendable builder) {
+      sqlClause(builder, "INSERT INTO", tables, "", "", "");
+      sqlClause(builder, "", columns, "(", ")", ", ");
+      sqlClause(builder, "VALUES", values, "(", ")", ", ");
+      return builder.toString();
+    }
+
+    private String deleteSQL(SafeAppendable builder) {
+      sqlClause(builder, "DELETE FROM", tables, "", "", "");
+      sqlClause(builder, "WHERE", where, "(", ")", " AND ");
+      return builder.toString();
+    }
+
+    private String updateSQL(SafeAppendable builder) {
+
+      sqlClause(builder, "UPDATE", tables, "", "", "");
+      sqlClause(builder, "SET", sets, "", "", ", ");
+      sqlClause(builder, "WHERE", where, "(", ")", " AND ");
+      return builder.toString();
+    }
+
+    public String sql(Appendable a) {
+      SafeAppendable builder = new SafeAppendable(a);
+      if (statementType == null) {
+        return null;
+      }
+
+      String answer;
+
+      switch (statementType) {
+        case DELETE:
+          answer = deleteSQL(builder);
+          break;
+
+        case INSERT:
+          answer = insertSQL(builder);
+          break;
+
+        case SELECT:
+          answer = selectSQL(builder);
+          break;
+
+        case UPDATE:
+          answer = updateSQL(builder);
+          break;
+
+        default:
+          answer = null;
+      }
+
+      return answer;
+    }
+
+## 测试
+	
+	  @Test
+	  public void test() {
+	    final StringBuilder sb = new StringBuilder();
+	    final String sql = new SQL() {{
+	      SELECT("P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME");
+	      SELECT("P.LAST_NAME, P.CREATED_ON, P.UPDATED_ON");
+	      FROM("PERSON P");
+	      FROM("ACCOUNT A");
+	      INNER_JOIN("DEPARTMENT D on D.ID = P.DEPARTMENT_ID");
+	      INNER_JOIN("COMPANY C on D.COMPANY_ID = C.ID");
+	      WHERE("P.ID = A.ID");
+	      WHERE("P.FIRST_NAME like ?");
+	      OR();
+	      WHERE("P.LAST_NAME like ?");
+	      GROUP_BY("P.ID");
+	      HAVING("P.LAST_NAME like ?");
+	      OR();
+	      HAVING("P.FIRST_NAME like ?");
+	      ORDER_BY("P.ID");
+	      ORDER_BY("P.FULL_NAME");
+	    }}.usingAppender(sb).toString();
+	  }
+
+执行以上测试用例，可以得到以下 SQL：
+
+	SELECT P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME, P.LAST_NAME, P.CREATED_ON, P.UPDATED_ON
+	FROM PERSON P, ACCOUNT A
+	INNER JOIN DEPARTMENT D on D.ID = P.DEPARTMENT_ID
+	INNER JOIN COMPANY C on D.COMPANY_ID = C.ID
+	WHERE (P.ID = A.ID AND P.FIRST_NAME like ?) 
+	OR (P.LAST_NAME like ?)
+	GROUP BY P.ID
+	HAVING (P.LAST_NAME like ?) 
+	OR (P.FIRST_NAME like ?)
+	ORDER BY P.ID, P.FULL_NAME
+
+
+## 总结
+实际上，AbstractSQL这个类单独来看，并不能给我们构造SQL语句带来什么方便，反而是把语句拆分特别复杂，还不如直接写来得方便。但是结合MyBatis的Annotation和Statement解析器，这个自动过程下，它的功能就显得特别强大了。
 
