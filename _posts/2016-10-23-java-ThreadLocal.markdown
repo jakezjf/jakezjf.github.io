@@ -8,7 +8,6 @@ header-img: ""
 catalog: true
 tags:
     - java
-    - Thread
     - 多线程
 ---
 

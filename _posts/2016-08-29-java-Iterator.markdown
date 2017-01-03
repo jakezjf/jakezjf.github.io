@@ -8,8 +8,6 @@ header-img: "img/blog/2016-08-29-Iterator.png"
 catalog: true
 tags:
     - java
-    - Iterator
-    - 迭代器
 ---
 
 > 本篇将介绍Iterator 的知识

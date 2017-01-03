@@ -8,8 +8,7 @@ header-img: "img/blog/"
 catalog: true
 tags:
     - java
-    - 并发
-    - 并行
+    - 多线程
 ---
 
 > 本篇将介绍Java并发和并行的相关知识

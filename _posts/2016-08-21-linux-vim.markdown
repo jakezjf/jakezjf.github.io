@@ -8,7 +8,6 @@ header-img: ""
 catalog: true
 tags:
     - Linux
-    - vim
 ---
 
 > 本篇将介绍vim的基本命令

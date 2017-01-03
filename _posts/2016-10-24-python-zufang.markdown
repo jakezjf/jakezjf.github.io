@@ -8,7 +8,6 @@ header-img: ""
 catalog: true
 tags:
     - python
-    - 爬虫
 ---
 
 > 记一次租房经历

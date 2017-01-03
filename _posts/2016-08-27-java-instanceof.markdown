@@ -8,8 +8,6 @@ header-img: ""
 catalog: true
 tags:
     - java
-    - instanceof
-    - 运算符
 ---
 
 > 本篇将介绍instanceof的知识

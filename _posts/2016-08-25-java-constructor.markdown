@@ -8,7 +8,6 @@ header-img: ""
 catalog: true
 tags:
     - java
-    - 构造器
 ---
 
 > 本篇将介绍构造器的知识

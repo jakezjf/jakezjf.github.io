@@ -7,8 +7,6 @@ author:     "JianFeng"
 header-img: ""
 tags:
     - 操作系统
-    - 置换算法
-    - 页面调度
 ---
 
 >本篇将介绍操作系统中的页面置换算法

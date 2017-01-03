@@ -8,8 +8,6 @@ header-img: "img/blog/birthdaylevelup.jpg"
 catalog: true
 tags:
     - java
-    - 注解
-    - Annotation
 ---
 
 > 本篇将介绍Java注解的知识

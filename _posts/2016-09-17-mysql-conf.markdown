@@ -8,7 +8,7 @@ header-img: ""
 catalog: true
 tags:
     - java
-    - 构造器
+    - Mysql
 ---
 
 > 本篇将介绍MySQL配置文件的相关知识

@@ -8,9 +8,7 @@ header-img: "img/blog/"
 catalog: true
 tags:
     - java
-    - 并发
     - 多线程
-    - 死锁
 ---
 
 > 本篇将介绍Java 并发编程中会遇到的问题

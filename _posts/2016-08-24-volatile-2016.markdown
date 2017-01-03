@@ -8,9 +8,7 @@ header-img: ""
 catalog: true
 tags:
     - java
-    - volatile
     - 多线程
-    - 并发
 ---
 
 > 本篇将介绍volatile的知识

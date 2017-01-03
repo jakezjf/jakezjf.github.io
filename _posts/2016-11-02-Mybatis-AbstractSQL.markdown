@@ -8,7 +8,7 @@ header-img: ""
 catalog: true
 tags:
     - java
-    - mybatis
+    - Mybatis
 ---
 
 > 本篇将介绍 Mybatis 构造动态SQL语句 的相关知识

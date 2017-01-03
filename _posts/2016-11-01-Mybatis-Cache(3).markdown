@@ -8,8 +8,7 @@ header-img: ""
 catalog: true
 tags:
     - java
-    - mybatis
-    - cache
+    - Mybatis
 ---
 
 > 本篇将介绍 Mybatis Cache 的相关知识
