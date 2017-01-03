@@ -57,7 +57,7 @@ SQL 、AbstractSQL 、SelectBuilder 和 SqlBuilder 这几个类都在 **package 
 
 	}
 
-SelectBuilder 中将构造器私有化，防止被外部实例化。SelectBuilder 中定义了一个成员变量 ThreadLocal<T> 类，静态初始化执行 **BEGIN()** 方法 。
+SelectBuilder 中将构造器私有化，防止被外部实例化。SelectBuilder 中定义了一个成员变量 ThreadLocal<T> 类，静态初始化执行 BEGIN() 方法 。
 
 
 ##### RESET() 方法
@@ -477,7 +477,7 @@ SQLStatement 内部为每个 SQL 关键字(例如：select、join、where、havi
 
 sqlClause() 方法中的参数 SafeAppendable 对象持有 **Appendable** ，Appendable 接口有许多实现类，例如：StringBuffer 、Writer 、PrintStream 等，可以满足多种 io 方式的需求。
 
-keyword 是 SQL 语句的关键字。parts 该 keyword 下的条件语句。open 和 close 一般作为区分，例如：where(),open 和 close 分别相当于 **(** 和 **)**，conjunction 连接。
+keyword 是 SQL 语句的关键字。parts 该 keyword 下的条件语句。open 和 close 一般作为区分，例如：where()，open 和 close 分别相当于 **(** 和 **)**，conjunction 连接。
 
 
 ##### sql(Appendable a) 方法
