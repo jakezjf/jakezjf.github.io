@@ -179,7 +179,85 @@ TransactionIsolationLevel 是枚举类型
 
 定义了四种级别及一个 NONE 。
 
-#### JdbcTransaction 实现类
+#### ManagedTransaction 实现类
+ManagedTransaction 类让容器来管理事务 Transaction 的整个周期。
 
+##### 成员变量及构造方法
+	  private static final Log log = LogFactory.getLog(ManagedTransaction.class);
+	  //日志
+	  private DataSource dataSource;
+	  //JDBC数据源
+	  private TransactionIsolationLevel level;
+	  //设置隔离级别
+	  private Connection connection;
+	  //数据库连接
+	  private boolean closeConnection;
+	
+	  public ManagedTransaction(Connection connection, boolean closeConnection) {
+	    this.connection = connection;
+	    this.closeConnection = closeConnection;
+	  }
+	
+	  public ManagedTransaction(DataSource ds, TransactionIsolationLevel level, boolean closeConnection) {
+	    this.dataSource = ds;
+	    this.level = level;
+	    this.closeConnection = closeConnection;
+	  }
+
+##### commit() 方法
+	  @Override
+	  public void commit() throws SQLException {
+	    // Does nothing
+	  }
+
+什么也没有做，交给容器管理 Transaction 。
+
+##### rollback() 方法
+
+	  @Override
+	  public void rollback() throws SQLException {
+	    // Does nothing
+	  }
+
+什么也没有做，交给容器管理 Transaction 。
+
+##### getConnection() 方法
+
+	  @Override
+	  public Connection getConnection() throws SQLException {
+	    if (this.connection == null) {
+	      openConnection();
+	    }
+	    return this.connection;
+	  }
+
+获取数据库连接。
+
+##### close() 方法
+	  @Override
+	  public void close() throws SQLException {
+	    if (this.closeConnection && this.connection != null) {
+	      if (log.isDebugEnabled()) {
+	        log.debug("Closing JDBC Connection [" + this.connection + "]");
+	      }
+	      this.connection.close();
+	    }
+	  }
+
+关闭数据库连接。
+
+##### openConnection() 方法
+
+	  protected void openConnection() throws SQLException {
+	    if (log.isDebugEnabled()) {
+	      log.debug("Opening JDBC Connection");
+	    }
+	    this.connection = this.dataSource.getConnection();
+	    if (this.level != null) {
+	      this.connection.setTransactionIsolation(this.level.getLevel());
+	    }
+	  }
+
+当事务没有获取到数据库连接时，调用 openConnection() 方法，获取连接。
 
 
