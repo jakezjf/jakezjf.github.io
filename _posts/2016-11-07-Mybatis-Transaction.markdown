@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Mybatis 事务管理的设计与实现"
+title:      "Mybatis 事务管理的设计与实现(一)"
 subtitle:   "Mybatis Transaction 源码解析"
 date:       2016-11-07
 author:     "JianFeng"
@@ -259,5 +259,26 @@ ManagedTransaction 类让容器来管理事务 Transaction 的整个周期。
 	  }
 
 当事务没有获取到数据库连接时，调用 openConnection() 方法，获取连接。
+
+### Mybatis 中的事务配置
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driverClassName}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+Mybatis中关于事务的配置是通过<transaction type="xx"/>来指定的。
+
+type为**”JDBC”**时、使用JdbcTransaction管理事务。
+
+type为**”managed”**时、使用ManagedTransaction管理事务(也就是交由外部容器管理)。
+
+
 
 
