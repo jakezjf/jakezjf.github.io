@@ -57,7 +57,7 @@ Mybatis 是java web常用的 ORM 框架，当然也实现了事务管理的功�
 	  
 	}
 
-#### JdbcTransaction 实现类
+### JdbcTransaction 实现类
 JdbcTransaction 所做的工作主要是对数据库连接Connection的一个封装，内部管理数据库事务还是调用Connection的提交、回滚等事务操作方法。
 
 ##### 成员变量及构造方法
@@ -179,7 +179,7 @@ TransactionIsolationLevel 是枚举类型
 
 定义了四种级别及一个 NONE 。
 
-#### ManagedTransaction 实现类
+### ManagedTransaction 实现类
 ManagedTransaction 类让容器来管理事务 Transaction 的整个周期。
 
 ##### 成员变量及构造方法
@@ -279,6 +279,8 @@ type为**”JDBC”**时、使用JdbcTransaction管理事务。
 
 type为**”managed”**时、使用ManagedTransaction管理事务(也就是交由外部容器管理)。
 
+## 总结
+如果我们使用 Mybatis 构建本地的程序，不是 WEB 程序，若将type设置成"MANAGED"，那么我们执行 delete 、 update 操作并用commit提交，是不会成功写入数据的，因为我们将MyBatis配置成了“MANAGED”，即MyBatis自己不管理事务，运行的是本地程序，没有事务管理功能，所以对数据库的update操作都是无效的，所以在开发本地程序时要注意 Mybatis 的配置问题。
 
 
 
