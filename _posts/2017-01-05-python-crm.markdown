@@ -19,8 +19,6 @@ tags:
 
 six==1.8.0 依赖包有bug，更新为six==1.10.0
 
-在使用Django批量建表时，使用的mysql数据库，InnoDB存储引擎。出现外键无法创建的情况，
-
 	Traceback (most recent call last):
 	  File "./manage.py", line 10, in <module>
 	    execute_from_command_line(sys.argv)
@@ -171,7 +169,7 @@ six==1.8.0 依赖包有bug，更新为six==1.10.0
 
 - 使用 SHOW ENGINE INNODB STATUS; 命令可以查看 LATEST FOREIGN KEY ERROR 外键的创建情况。
 - 检查表中外键与主键对应类型是否一样
-- 同时,在查询运行DDL之前设置foreign_key_checks = 0，这样就可以以任意顺序创建表而不是之前需要创建所有父表相关的子表。
+- 同时,在查询运行DDL之前设置set foreign_key_checks = 0，这样就可以以任意顺序创建表而不是之前需要创建所有父表相关的子表。
 
 ⚠️ 数据库表的引擎类型也要注意，MySQL最常用的数据存储引擎有 **InnoDB** 、 **MyISAM** ，在导表的时候要注意原存储引擎和现在的存储引擎。
 
