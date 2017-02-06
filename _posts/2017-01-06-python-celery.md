@@ -103,6 +103,62 @@ loglevel 日志级别
 成功执行任务，返回3
 
 
+### 也可以用作异步邮件服务
+
+##### 创建一个emailTask.py
+
+
+	from celery import Celery
+	import time
+	
+	app = Celery('emailTask',broker='')
+	
+	
+	@app.task
+	def sendEmail(email):
+	    print('send %s' % email)
+	    time.sleep(2)
+	    print('OK')
+	    
+##### 启动任务
+将要发送邮件的任务交给中间人 broker
+
+在控制台输入：
+
+	$ celery -A emailTask worker --loglevel=info 
+	
+##### 调用任务
+
+在 shell 输入：
+
+	from emailTask import sendEmail
+	sendEmail.delay('zhongjianfeng@meituan.com')
+	<AsyncResult: 320c333b-6af7-4179-9e28-73aec9761a95>
+	
+看看控制台：
+
+	[2017-01-06 20:43:39,829: INFO/MainProcess] Connected to amqp://guest:**@127.0.0.1:5672//
+	[2017-01-06 20:43:39,841: INFO/MainProcess] mingle: searching for neighbors
+	[2017-01-06 20:43:40,852: INFO/MainProcess] mingle: all alone
+	[2017-01-06 20:43:40,867: WARNING/MainProcess] celery@zhongjianfengdeMacBook-Pro.local ready.
+	[2017-01-06 20:44:10,652: INFO/MainProcess] Received task: emailTask.sendEmail[320c333b-6af7-4179-9e28-73aec9761a95]
+	[2017-01-06 20:44:10,655: WARNING/Worker-4] send zhongjianfeng@meituan.com
+	[2017-01-06 20:44:12,655: WARNING/Worker-4] OK
+	[2017-01-06 20:44:12,657: INFO/MainProcess] Task emailTask.sendEmail[320c333b-6af7-4179-9e28-73aec9761a95] succeeded in 2.002703946s: None
+	
+# 总结
+Celery 模块操作简单，支持多个中间人，但有的中间人没有专门的维护者。
+
+缺失监视的支持意味着这个传输方式不能实现事件，并且诸如 Flower、 celery events 、 celerymon 和其他基于事件的监视工具将不能使用。
+
+所以在使用 Celery 时要合理选择中间人！
+
+
+	    
+	
+	
+
+
 
 
 
