@@ -1,4 +1,18 @@
+---
+layout:     post
+title:      "Redis 中 string 的实现原理"
+subtitle:   "学习和探索 Redis 中 string 的实现原理"
+date:       2017-01-06
+author:     "JianFeng"
+header-img: ""
+catalog: true
+tags:
+    - Redis
+---
 
+> 本篇将介绍 Redis 中 string 的实现原理 的相关知识
+
+#Redis
 
 redis 数据库中每个键值对 (key－value) 都是一个对象 (Object) 。
 
