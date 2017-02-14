@@ -41,6 +41,29 @@ value++ 其实包含三个步骤，首先要先获取value的初始值，然后�
 
 使用 synchronized 关键字给对象加锁，还有一种方式是使用显示加锁。
 
+    private int value;
+    
+    private Object lock = new Object();
+
+    public synchronized void add(){
+        synchronized (lock){
+            value++;
+        }
+    }
+    
+这里我们使用了一个 object 对象，我们通过这个 lock 对象，实现代码块的同步，也是一种同步方式。
+
+上面两种都有加锁的开销，Java 中提供了一个关键字：volatile
+
+
+    private volatile int value;
+
+    public synchronized void add(){
+        value++;
+    }
+    
+volatile  
+
 
 
 
