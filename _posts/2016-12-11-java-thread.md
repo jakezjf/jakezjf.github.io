@@ -62,7 +62,37 @@ value++ 其实包含三个步骤，首先要先获取value的初始值，然后�
         value++;
     }
     
-volatile  
+volatile 可以保证变量的数据一致性，在汇编层面，Java 编译器会为被 volatile 关键字修饰的变量前后加上标记，在转化为汇编指令时，通过 store、load 实现数据一致性。
+
+
+统计方法的调用次数是比较常见的需求
+
+    private int count = 0;
+
+    public void add(){
+        count++;
+        //doing
+    }
+    
+上面这段代码的 count 可以用来统计 add() 方法被调用的次数。
+
+但这并不是线程安全的，Java 中提供了一个原子变量类，在 java.util.concurrent.atomic 中包含许多原子变量类，例如：AtomicLong
+
+    private AtomicLong count = new AtomicLong(0);
+    
+    public long getCount(){
+        return count.get();
+    }
+    
+    public void add(){
+        count.incrementAndGet();
+        //doing
+    }
+    
+通过原子变量类 AtomicLong 代替使用 Long 类型就可以实现线程安全了，十分方便，它能确保我们访问变量都是原子性操作。
+
+
+
 
 
 
