@@ -2,7 +2,7 @@
 layout:     post
 title:      "X-Frame-Options 响应头的应用"
 subtitle:   "学习X-Frame-Options 响应头的应用"
-date:       2017-02-016
+date:       2017-02-16
 author:     "JianFeng"
 header-img: ""
 catalog: true
