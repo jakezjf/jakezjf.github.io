@@ -12,7 +12,8 @@ tags:
 
 > 本篇将介绍 Redis 中 string 的实现原理 的相关知识
 
-#Redis
+
+# Redis
 
 redis 数据库中每个键值对 (key－value) 都是一个对象 (Object) 。
 
@@ -94,5 +95,10 @@ append 命令：append key value
 	"zhongjianfeng01"
 	
 在 key 为 name 的 value 后添加 "01"
+
+
+# 总结
+
+redis 在设计字符串时精心设计，考虑到字符串的使用场景较多，字符串的键值对也经常变化，特地设计了 SDS ，典型的内存换性能方式。
 
 
