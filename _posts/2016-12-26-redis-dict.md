@@ -52,7 +52,7 @@ dictEntry 中，key 是哈希节点的键，v 是哈希节点的值，v 的取�
 
 看看下面的图示：
 
-![](../img/blog/dict0.png)
+![](/img/blog/dict0.png)
 
 这是一个哈希节点 key0 -> value0
 
@@ -60,7 +60,7 @@ dictEntry 中，key 是哈希节点的键，v 是哈希节点的值，v 的取�
 
 添加一个 key1 -> value1 节点
 
-![](../img/blog/dict1.jpg)
+![](/img/blog/dict1.jpg)
 
 可以看到新加入的节点 key1 -> value1 插在了 key0 -> value0 之前，为什么要这样呢？因为当哈希键重复较多，也就是这个链表的哈希节点太多时，我们要插入一个新的哈希节点，那么我们就必须遍历这个链表，从而找到尾节点将其插入。而 redis 采用了头插法的策略，将原先插入时间复杂度为 O(n) 降到了 时间复杂度为 O(1)，大大提高了效率。
 
@@ -86,12 +86,12 @@ table 是一个数组，每个数组都是一个指向 dictEntry 类型的指针
 
 下图是一个空的哈希表：
 
-![](../img/blog/dict3.png)
+![](/img/blog/dict3.png)
 
 下图是一个插入了两个节点的哈希表：
 
 
-![](../img/blog/dict4.png)
+![](/img/blog/dict4.png)
 	
 
 ### 字典
@@ -136,7 +136,7 @@ dictType 的定义：
 privdata 属性保存了需要传给特定类型函数的可选参数。
 
 
-![](../img/blog/dict2.png)
+![](/img/blog/dict2.png)
 
 ht[2] ht的数目是2，包含了两个数组，一般情况 ht[0] 作为字典，而 ht[1] 则在对 ht[0] 进行 rehash 操作的时候进行使用，
 
@@ -144,7 +144,7 @@ rehashidx 用来记录当前的 rehash 情况，不进行 rehash 时，该值为
 
 普通状态下的字典：
 
-![](../img/blog/dict5.png)
+![](/img/blog/dict5.png)
 
 
 # 总结
