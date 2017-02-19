@@ -114,9 +114,42 @@ table 是一个数组，每个数组都是一个指向 dictEntry 类型的指针
 
 type 属性和 privdata 属性是针对不同类型的键值对，为创建多态字典而设置。
 
+dictType 的定义：
+
+	
+	typedef struct dictType {
+	    //计算哈希值的函数
+	    unsigned int (*hashFunction)(const void *key);
+	    //对key进行复制的函数
+	    void *(*keyDup)(void *privdata, const void *key);
+	    //对value进行复制的函数
+	    void *(*valDup)(void *privdata, const void *obj);
+	    //对比键与键之间的函数
+	    int (*keyCompare)(void *privdata, const void *key1, const void *key2);
+	    //销毁键的函数
+	    void (*keyDestructor)(void *privdata, void *key);
+	    //销毁value的函数
+	    void (*valDestructor)(void *privdata, void *obj);
+	} dictType;
+	
+
+privdata 属性保存了需要传给特定类型函数的可选参数。
 
 
 ![](../img/blog/dict2.png)
+
+ht[2] ht的数目是2，包含了两个数组，一般情况 ht[0] 作为字典，而 ht[1] 则在对 ht[0] 进行 rehash 操作的时候进行使用，
+
+rehashidx 用来记录当前的 rehash 情况，不进行 rehash 时，该值为-1。
+
+普通状态下的字典：
+
+![](../img/blog/dict5.png)
+
+
+# 总结
+
+字典使我们最常用的数据结构之一，了解它的具体构造有利于我们更好地使用它。
 
 
 
