@@ -205,7 +205,8 @@ listInsertNode() 方法将新值添加到指定节点的前或者后，时间复
 	    zfree(node);
 	    list->len--;
 	}
-	
+
+
 listDelNode() 方法用于删除链表中的给定值，时间复杂度为 O(1)。
 
 
@@ -241,6 +242,7 @@ listDelNode() 方法用于删除链表中的给定值，时间复杂度为 O(1)�
 	    }
 	    return copy;
 	}
+
 
 listDup() 方法用于复制链表到一个新的链表。时间复杂度为 O(1)。
 
