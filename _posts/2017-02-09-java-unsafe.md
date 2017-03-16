@@ -56,6 +56,58 @@ VM.isSystemDomainLoader() 方法用来判断该类是不是由系统类加载器
 
 
 
+# Unsafe 其余方法
+
+	
+	//返回一个静态字段的偏移量
+	public native long staticFieldOffset(Field f);
+	
+	//返回一个非静态字段字段的偏移量
+	public native long objectFieldOffset(Field f);
+	
+	//获取给定对象指定偏移量的int值
+	public native int getInt(Object o, long offset);
+	
+	//把给定对象指定偏移量上的值设置为整型变量ｘ
+	public native void putInt(Object o, long offset, int x);
+	
+	//获取给定内存地址上的byte值
+	public native byte    getByte(long address);
+	
+	//把给定内存地址上的值设置为byte值ｘ
+	public native void    putByte(long address, byte x);
+	
+	//获取给定内存地址上的值，该值是表示一个内存地址
+	public native long getAddress(long address);
+	
+	//分配一块本地内存，这块内存的大小便是给定的大小．这块内存的值是没有被初始化的
+	public native long allocateMemory(long bytes);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	
