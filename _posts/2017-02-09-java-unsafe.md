@@ -54,7 +54,7 @@ VM.isSystemDomainLoader() 方法用来判断该类是不是由系统类加载器
 - freeMemory			用于释放内存
 
 
-##### allocateMemory 
+##### allocateMemory()
 allocateMemory 方法不调用构造方法生成对象：
 	
 	import sun.misc.Unsafe;
@@ -113,6 +113,24 @@ allocateMemory 方法不调用构造方法生成对象：
 
 通过 allocateMemory 方法，我们可以不使用构造方法创建对象，这个方法是很有用的，假如我们想获取对象的属性，那么我们要先构造这个对象，这需要消耗堆里的内存空间，不是很划算吧。如果使用 allocateMemory 方法，我们可以不是创建这个实例获得对象的信息，方便开发，减少内存消耗。
 
+##### reallocateMemory()
+reallocateMemory() 方法用于扩充内存
+
+	public native long reallocateMemory(long var1, long var3); 
+
+
+##### freeMemory()
+
+	public native void freeMemory(long var1);
+
+释放内存,参数是内存地址。
+
+
+##### copyMemory()
+
+	public native void copyMemory(Object var1, long var2, Object var4, long var5, long var7);
+
+copyMemory() 方法用来内存数据的拷贝。
 
 
 
