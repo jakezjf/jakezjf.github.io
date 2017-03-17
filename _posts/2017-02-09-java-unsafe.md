@@ -54,6 +54,67 @@ VM.isSystemDomainLoader() 方法用来判断该类是不是由系统类加载器
 - freeMemory			用于释放内存
 
 
+##### allocateMemory 
+allocateMemory 方法不调用构造方法生成对象：
+	
+	import sun.misc.Unsafe;
+	
+	import java.lang.reflect.Field;
+	
+	/**
+	 * Created by zhongjianfeng.
+	 */
+	public class Demo {
+	
+	    public static void main(String[] args) throws NoSuchFieldException, IllegalAccessException, InstantiationException {
+	        Field field = User.class.getDeclaredField("theUnsafe");
+	        field.setAccessible(true);
+	        Unsafe unsafe = (Unsafe)field.get(null);
+	        //通过unsafe来获取对象实例
+	        User user = (User) unsafe.allocateInstance(User.class);
+	        System.out.println("userName:" + user.getName() + "  age:" + user.getAge());
+	        //调用构造方法
+	        User user1 = new User();
+	        System.out.println("userName:" + user1.getName() + "  age:" + user1.getAge());
+	    }
+	
+	
+	}
+	
+	
+	class User{
+	
+	    private String name = "init";
+	
+	    private int age = 0;
+	
+	    public User(){
+	        this.name = "jianfeng";
+	        this.age = 21;
+	    }
+	
+	    public String getName(){
+	        return this.name;
+	    }
+	
+	    public int getAge(){
+	        return this.age;
+	    }
+	
+	}
+	
+	
+运行和程序会打印：
+	
+	userName:init  age:0
+	userName:jianfeng  age:21
+	
+可以看到使用 allocateMemory 方法并没有调用 User 类的构造方法。
+
+通过 allocateMemory 方法，我们可以不使用构造方法创建对象，这个方法是很有用的，假如我们想获取对象的属性，那么我们要先构造这个对象，这需要消耗堆里的内存空间，不是很划算吧。如果使用 allocateMemory 方法，我们可以不是创建这个实例获得对象的信息，方便开发，减少内存消耗。
+
+
+
 
 
 # Unsafe 其余方法
@@ -72,16 +133,65 @@ VM.isSystemDomainLoader() 方法用来判断该类是不是由系统类加载器
 	public native void putInt(Object o, long offset, int x);
 	
 	//获取给定内存地址上的byte值
-	public native byte    getByte(long address);
+	public native byte getByte(long address);
 	
 	//把给定内存地址上的值设置为byte值ｘ
-	public native void    putByte(long address, byte x);
+	public native void putByte(long address, byte x);
 	
 	//获取给定内存地址上的值，该值是表示一个内存地址
 	public native long getAddress(long address);
 	
 	//分配一块本地内存，这块内存的大小便是给定的大小．这块内存的值是没有被初始化的
 	public native long allocateMemory(long bytes);
+	
+	
+	//定义一个类
+	public native Class<?> defineClass(String name, byte[] b, int off, int len,
+	                                       ClassLoader loader,
+	                                       ProtectionDomain protectionDomain);
+	
+	//定义一个匿名类
+	public native Class<?> defineAnonymousClass(Class<?> hostClass, byte[] data, Object[] cpPatches);
+	
+	//获取给定对象上的锁（jvm中有monitorenter 和 monitorexit两个指令）
+	public native void monitorEnter(Object o);
+	
+	//释放给定对象上的锁（jvm中有monitorenter 和 monitorexit
+	public native void monitorExit(Object o);
+	
+	//CAS操作，修改对象指定偏移量上的（CAS简介见末尾）
+	public final native boolean compareAndSwapObject(Object o, long offset,
+	                                                 Object expected,
+	                                                 Object x);
+	
+	//CAS操作
+	public final native boolean compareAndSwapInt(Object o, long offset,
+	                                                  int expected,
+	                                                  int x);
+	
+	//CAS操作
+	public final native boolean compareAndSwapLong(Object o, long offset,
+	                                                   long expected,
+	                                                   long x);
+	
+	//获取被volatile关键字修饰的字段的值
+	public native Object getObjectVolatile(Object o, long offset);
+	
+	//取消阻塞线程 thread,如果 thread 已经是非阻塞状态，
+	//那么下次对该 thread 进行park操作时就不会阻塞
+	public native void unpark(Object thread);
+	
+	//阻塞当前线程，isAbsolute的作用不是很清楚．（如果该方法调用前在线程非阻塞情况下调用了unpart方法，那么此次调用该方法不会令当前线程阻塞）
+	public native void park(boolean isAbsolute, long time);
+	
+	//CAS操作
+	public final int getAndAddInt(Object o, long offset, int delta) {
+	        int v;
+	        do {
+	            v = getIntVolatile(o, offset);
+	        } while (!compareAndSwapInt(o, offset, v, v + delta));
+	        return v;
+	}
 
 
 
