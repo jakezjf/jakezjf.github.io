@@ -47,7 +47,7 @@ getUnsafe() 方法用来获取 Unsafe 实例，但一般情况下拿不到这个
 VM.isSystemDomainLoader() 方法用来判断该类是不是由系统类加载器加载的，如果该类不是系统类加载器加载的，那么将会抛出 SecurityException 异常。
  
 
-## Unsafe 主要方法
+# Unsafe 主要方法
 
 - allocateMemory		用于分配内存
 - reallocateMemory		用于扩充内存
@@ -133,7 +133,25 @@ reallocateMemory() 方法用于扩充内存
 copyMemory() 方法用来内存数据的拷贝。
 
 
+# Unsafe CAS 操作
 
+CAS 操作方法有 compareAndSwapInt，compareAndSwapLong等。
+
+CAS 操作主要是将内存值与预期值作比较，判断是否相等，相等的话，写入数据，不相等不做操作，返回旧数据。在 natUnsafe.cc 中能看到它的实现：
+
+	static inline bool
+	compareAndSwap (volatile jint *addr, jint old, jint new_val)
+	{
+	  jboolean result = false;
+	  spinlock lock;
+	  if ((result = (*addr == old)))
+	    *addr = new_val;
+	  return result;
+	}
+
+这类方法使用了 volatile 关键字，通过 volatile 的内存屏障保证数据一致性。各个线程将不会从缓存中读数据，而是直接从内存中读取数据！
+
+举个栗子：一个线程读取一个变量a，并对变量a进行+1操作，a+1操作的值不能马上写回内存，因为可能在a+1这个阶段，其他线程对a进行了写操作，这时要先判断原值是否为a(也就是判断有没有被其他线程修改)，如果预期值和原值相同，那么将a+1写回内存。
 
 # Unsafe 其余方法
 
