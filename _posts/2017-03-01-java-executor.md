@@ -1,6 +1,18 @@
+---
+layout:     post
+title:      "Java 并发框架 Executor 的学习"
+subtitle:   "学习 Executor 并发框架"
+date:       2017-03-01
+author:     "JianFeng"
+header-img: ""
+catalog: true
+tags:
+    - Java
+---
 
+> 学习 Executor 并发框架
 
-# Java 并发框架的学习(一)
+# Java 并发框架
 今天学习了 Java 的并发框架，先来说说并发中最常用的东西吧----线程池。线程池是什么？我的理解就是将一堆线程放在一个池子了里进行统一的管理，例如创建新的线程、分配任务、销毁线程等等。为什么要用线程池？我来一个 task 就 new Thread 不好么？方便省事。但创建线程和销毁线程是需要消耗系统性能为代价的，可能执行 task 的时间比创建线程、销毁线程的时间要少得多。使用了线程池在并发编程中可以提高我们程序性能。
 
 线程池的优点：
