@@ -33,6 +33,14 @@ Executor 接口中只定义了一个方法：
 
 # Executor 的扩展接口和实现类
 
+Executor 的扩展接口主要是 ExecutorService 和 ScheduleExecutorService ，和三个比较重要的实现类 ThreadpoolExecutor 、 ForkJoinPool 和 ScheduleThreadPoolExecutor。
+
+下面是它们之间的 UML 图：
+
+
+![](../img/blog/executor-0.jpg)
+
+
 
 
 
@@ -61,9 +69,24 @@ Executor 接口中只定义了一个方法：
 
 - maximumPoolSize 
 
-	maximumPoolSize 参数定义了最大线程的数量，maximumPoolSize 减去 corePoolSize 得到的数量是最大非核心线程的数量，当核心线程、任务队列和非核心线程都已经分配任务，没有空闲的线程时，可能会 reject 新进来的任务，具体要看执行的策略。
+	maximumPoolSize 参数定义了最大线程的数量，当核心线程、任务队列和非核心线程都已经分配任务，没有空闲的线程时，可能会 reject 新进来的任务，具体要看执行的策略。
 	
 - keepAliveTime
+
+	keepAliveTime 设置空闲线程的存活周期
+	
+- TimeUnit
+
+	TimeUnit 设置时间单位
+	
+- BlockingQueue
+
+	BlockingQueue 这是一个阻塞队列，当核心线程数量满时，新来的任务将进入队列，等待核心线程调取任务。
+	
+
+
+
+
 
 
 # Worker 类
@@ -79,12 +102,15 @@ execute() 方法可传入的参数为 Runnable，用于执行给定的任务。�
         	//如果线程为Null，那么抛出NullPointerException()异常
             throw new NullPointerException();
         int c = ctl.get();
+        //如果当前工作线程数小于核心线程数那么，将添加一个 worker
         if (workerCountOf(c) < corePoolSize) {
             if (addWorker(command, true))
                 return;
             c = ctl.get();
         }
+        //如果核心线程满了，判断队列是否满了
         if (isRunning(c) && workQueue.offer(command)) {
+        	//如果没有满那么将任务加入队列，等待核心线程
             int recheck = ctl.get();
             if (! isRunning(recheck) && remove(command))
                 reject(command);
