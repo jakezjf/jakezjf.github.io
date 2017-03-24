@@ -51,6 +51,7 @@ Executor 的扩展接口主要是 ExecutorService 和 ScheduleExecutorService �
 
 
 ##### 构造方法
+
 看看 ThreadPoolExecute 类的构造方法：
 
 	public ThreadPoolExecutor(int corePoolSize,
@@ -83,10 +84,9 @@ Executor 的扩展接口主要是 ExecutorService 和 ScheduleExecutorService �
 
 	BlockingQueue 这是一个阻塞队列，当核心线程数量满时，新来的任务将进入队列，等待核心线程调取任务。
 	
+- ThhredFactory 
 
-
-
-
+	ThreadFactory 用来管理线程
 
 
 # Worker 类
@@ -193,3 +193,81 @@ addWorker 方法
         }
         return workerStarted;
     }
+    
+    
+    
+    
+    
+# 程序终止时执行策略
+当程序终止时，会调用两个方法：
+
+- shutdown()
+- shutdownNow()
+
+从这两个方法可以看出，一个是温柔的关闭所有线程和任务，一个是立即中断所有线程和任务。
+
+##### shutdown() 方法
+shutdown() 方法中断线程比较平滑，不会立即中断线程和结束任务。
+
+
+    public void shutdown() {
+        final ReentrantLock mainLock = this.mainLock;
+        mainLock.lock();
+        try {
+            checkShutdownAccess();
+            advanceRunState(SHUTDOWN);
+            interruptIdleWorkers();
+            onShutdown(); 
+        } finally {
+            mainLock.unlock();
+        }
+        tryTerminate();
+    }
+
+
+
+
+
+
+##### shutdownNow() 方法
+执行这个方法就比较暴力，直接 stop 。
+
+
+
+
+    public List<Runnable> shutdownNow() {
+        List<Runnable> tasks;
+        final ReentrantLock mainLock = this.mainLock;
+        mainLock.lock();
+        try {
+            checkShutdownAccess();
+            advanceRunState(STOP);
+            interruptWorkers();
+            tasks = drainQueue();
+        } finally {
+            mainLock.unlock();
+        }
+        tryTerminate();
+        return tasks;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
