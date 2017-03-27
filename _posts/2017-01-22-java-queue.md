@@ -60,8 +60,178 @@ ArrayBlockingQueue 类是基于数组实现的，在进行初始化时要设置�
 LinkedBlockingQueue 类是基于链表实现的，在进行初始化时可不设置队列容量，最大限制容量为 Integer.MAX_VALUE 。
 
 
+# ArrayBlockingQueue 的实现
+ArrayBlockingQueue 实现的是一个有界的缓冲区队列，初始化时需要制定有界缓冲区的容量，并且无法更改。当队列已满，进行入队操作会导致阻塞，直到有消费者消费队列。当队列为空时，进行出队操作也会导致阻塞，直到有生产者进行入队。适合于实现“生产者消费者”模式。
 
 
+##### ArrayBlockingQueue 属性
+
+
+	//序列化相关
+	private static final long serialVersionUID = -817911632652898426L;
+
+    //数组存储元素
+    final Object[] items;
+
+    //删除元素、获取下一个元素索引
+    int takeIndex;
+
+    //入队操作，加入元素操作索引
+    int putIndex;
+
+    //用于计数
+    int count;
+
+    //队列用的锁，读写操作都要获取容器的锁
+    final ReentrantLock lock;
+
+    //等待策略
+    private final Condition notEmpty;
+
+    private final Condition notFull;
+
+    //迭代器
+    transient Itrs itrs = null;
+
+
+
+##### ArrayBlockingQueue 的构造函数
+ArrayBlockingQueue 的构造函数主要有两个：
+
+    public ArrayBlockingQueue(int capacity, boolean fair) {
+        if (capacity <= 0)
+            throw new IllegalArgumentException();
+        this.items = new Object[capacity];
+        lock = new ReentrantLock(fair);
+        notEmpty = lock.newCondition();
+        notFull =  lock.newCondition();
+    }
+    
+该构造器设置了队列的容量，使用的 **ReentrantLock** 是公平还是非公平的锁。也就是选择公平策略，在未对 fair 进行指定时，默认情况下用的 ReentrantLock 是 NonfairSync ，它将不能保证队列 FIFO 的特性，但能提高队列的吞吐量。如果 fair 设置为 True ，将能保证多线程环境下 FIFO 的特性，但会降低吞吐量。
+
+
+    public ArrayBlockingQueue(int capacity, boolean fair,
+                              Collection<? extends E> c) {
+        this(capacity, fair);
+
+        final ReentrantLock lock = this.lock;
+        lock.lock(); // Lock only for visibility, not mutual exclusion
+        try {
+            int i = 0;
+            try {
+                for (E e : c) {
+                    checkNotNull(e);
+                    items[i++] = e;
+                }
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                throw new IllegalArgumentException();
+            }
+            count = i;
+            putIndex = (i == capacity) ? 0 : i;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+上面这个构造器比第一个构造器多了 Collection 参数，在初始化时可以初始化集合元素并指定顺序。
+
+
+##### enqueue() 入队操作
+
+    private void enqueue(E x) {    
+        //获取元素
+        final Object[] items = this.items;        
+       	//通过putIndex 确定队尾位置
+        items[putIndex] = x;
+        //如果putIndex 的长度等于数组长度那么设置到数组头部
+        if (++putIndex == items.length)        
+            putIndex = 0;
+        //计数
+        count++;
+        notEmpty.signal();
+    }
+    
+    
+##### dequeue() 出队操作
+
+
+    private E dequeue() {
+        final Object[] items = this.items;
+        @SuppressWarnings("unchecked")
+        //获取出队元素
+        E x = (E) items[takeIndex];
+        //设置为null
+        items[takeIndex] = null;
+        if (++takeIndex == items.length)
+            takeIndex = 0;
+        count--;
+        if (itrs != null)
+            itrs.elementDequeued();
+        notFull.signal();
+        return x;
+    }
+
+##### removeAt() 删除指定下标的元素
+
+    void removeAt(final int removeIndex) {
+        final Object[] items = this.items;
+        if (removeIndex == takeIndex) {
+            //如果要删除takeIndex队头元素，时间复杂度为O(1)
+            //不需要移动后面元素
+            items[takeIndex] = null;
+            if (++takeIndex == items.length)
+                takeIndex = 0;
+            count--;
+            if (itrs != null)
+                itrs.elementDequeued();
+        } else {
+            final int putIndex = this.putIndex;
+            //找到要删除的元素使其后面的元素都前移
+            for (int i = removeIndex;;) {
+                int next = i + 1;
+                if (next == items.length)
+                    next = 0;
+                if (next != putIndex) {
+                    items[i] = items[next];
+                    i = next;
+                } else {
+                    items[i] = null;
+                    this.putIndex = i;
+                    break;
+                }
+            }
+            count--;
+            if (itrs != null)
+                itrs.removedAt(removeIndex);
+        }
+        notFull.signal();
+    }
+
+删除指定下标的元素，这个最坏复杂度为O(n)，这是数组本身的一个缺点。
+
+
+##### offer() 对入队进行加锁操作
+
+    public boolean offer(E e) {
+        checkNotNull(e);
+        final ReentrantLock lock = this.lock;
+        lock.lock();
+        try {
+            if (count == items.length)
+                return false;
+            else {
+                enqueue(e);
+                return true;
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+通过 ReentrantLock 加锁，对 enqueue(e) 进行加锁封装。
+
+
+# 
 
 
 
