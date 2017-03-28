@@ -50,7 +50,7 @@ Executor 的扩展接口主要是 ExecutorService 和 ScheduleExecutorService �
 下面是它们之间的 UML 图：
 
 
-![](../../img/blog/executor-0.jpg)
+![](/img/blog/executor-0.jpg)
 
 
 
