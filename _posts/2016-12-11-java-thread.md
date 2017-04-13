@@ -1,4 +1,16 @@
+---
+layout:     post
+title:      "Java 并发编程的思考"
+subtitle:   "Java 并发编程的思考"
+date:       2017-02-10
+author:     "JianFeng"
+header-img: ""
+catalog: true
+tags:
+    - Java
+---
 
+> Java 并发编程的思考
 
 # Java 并发编程思考
 
