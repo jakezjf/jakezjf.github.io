@@ -163,3 +163,10 @@ public class ClientPerson implements Runnable{
 } 
 ```
 
+- 总结
+Socket 使开发人员不用太关心底层的实现，专心业务上的开发，上面两个实例使用了多线程的实现方式，但在实际使用中是十分消耗性能
+
+
+
+
+
