@@ -122,14 +122,14 @@ HashMap<String,String> hashmap = new HashMap<String,String>();
 使用静态工厂方法：
 
 ```
-public static <K,V> HashMap<K,V> newIntance{
+public static <K,V> HashMap<K,V> newInstance{
     return new HashMap<K,V>();
 }
 ```
 
 在使用 HashMap 时，可以使用下面代码，创建一个 HashMap对象：
 
-HashMap<String,String> m = HashMap.newIntance();
+HashMap<String,String> m = HashMap.newInstance();
 
 # 静态工厂方法的缺点
 
