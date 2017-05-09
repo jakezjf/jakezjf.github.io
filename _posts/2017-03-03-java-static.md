@@ -111,9 +111,41 @@ public static <E extends Enum<E>> EnumSet<E> noneOf(Class<E> elementType) {
 
 
 
+##### 代码更简洁
+
+在创建对象时，我们经常要在构造函数中传入参数，十分繁琐。
+
+比如：创建一个 HashMap
+
+HashMap<String,String> hashmap = new HashMap<String,String>();
+
+使用静态工厂方法：
+
+```
+public static <K,V> HashMap<K,V> newIntance{
+    return new HashMap<K,V>();
+}
+```
+
+在使用 HashMap 时，可以使用下面代码，创建一个 HashMap对象：
+
+HashMap<String,String> m = HashMap.newIntance();
+
+# 静态工厂方法的缺点
+
+##### 子类化
+
+类如果不包含公有构造函数，那么就不能被子类化。
+
+##### 静态工厂方法和普通静态方法没有区别
+
+要想查明这个类是如何被实例化的，这是十分困难的。
 
 
 
+# 总结
+
+对于一些常用的工具类，可以使用静态工厂方法，尽量避免过多的实例化，降低程序性能。
 
 
 
