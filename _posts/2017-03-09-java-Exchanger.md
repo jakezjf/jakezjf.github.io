@@ -99,3 +99,10 @@ public static void main(String[] args){
 ```
 
 可以看到 线程A 发送的消息传递给了 线程B ；线程B 发送的消息传递给了 线程A 。
+
+# 源码分析
+
+研究了一下 Exchanger 的部分源码，了解了它的一些实现原理。
+
+
+
