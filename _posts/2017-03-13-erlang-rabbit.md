@@ -145,11 +145,9 @@ $ sbin/rabbitmqctl status
 
 
 
-```
-    
-```
+# 总结
 
-
+RabbitMQ 的安装流程十分简易，是许多消息中间件中安装最简便的。
 
 
 
