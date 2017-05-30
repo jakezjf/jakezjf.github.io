@@ -63,6 +63,11 @@ Purge Thread 主要用来回收已经使用并分配的undo页，在InnoDB 1.1 �
 	| innodb_purge_threads | 4     |
 	+----------------------+-------+
 	1 row in set (0.00 sec)
+	
+	
+# 总结
+
+InnoDB 引擎使用多线程处理数据，各功能都分配有不同线程，线程的设置影响着数据库的整体性能。
 
 
 
