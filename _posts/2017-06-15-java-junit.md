@@ -12,6 +12,8 @@ tags:
 
 > Junit 并发测试用例
 
+```
+
   import static org.junit.Assert.assertTrue;
 
   import java.util.ArrayList;
@@ -69,10 +71,9 @@ tags:
                   exceptions.isEmpty());
       }
   }
+```
   
-  
-  
-'''
+```
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -101,4 +102,4 @@ public class ConcurrencyTestUtilTest {
         ConcurrencyTestUtil.assertConcurrent("1024tasks", tasks, 10, 1000);
     }
 }
-'''
+```
