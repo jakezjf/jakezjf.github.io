@@ -56,6 +56,130 @@ tags:
     
 ArrayBlockingQueue 构造函数可以传两个参数，capacity 设置数组长度，fair 设置是否为公平的锁策略。
 
+    public ArrayBlockingQueue(int capacity, boolean fair,
+                              Collection<? extends E> c) {
+        this(capacity, fair);
+
+        final ReentrantLock lock = this.lock;
+        lock.lock(); // Lock only for visibility, not mutual exclusion
+        try {
+            int i = 0;
+            try {
+                for (E e : c) {
+                    checkNotNull(e);
+                    items[i++] = e;
+                }
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                throw new IllegalArgumentException();
+            }
+            count = i;
+            putIndex = (i == capacity) ? 0 : i;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+ 也可以在初始化 ArrayBlockingQueue 时添加集合元素。
+
+##### size()方法
+
+    public int size() {
+        final ReentrantLock lock = this.lock;
+        lock.lock();
+        try {
+            return count;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+先获取这个对象的锁，可以保证数据一致性，在高并发场景，不会出现脏数据。
+
+##### put()方法
+
+    public void put(E e) throws InterruptedException {
+        checkNotNull(e);
+        final ReentrantLock lock = this.lock;
+        lock.lockInterruptibly();
+        try {
+            while (count == items.length)
+                notFull.await();
+            enqueue(e);
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+  put()方法可以插入一个元素，采用了中断锁，当 cout == items.length 时，一直阻塞，直到队列有空的位置。
+  
+  ##### poll()方法
+  
+     public E poll() {
+        final ReentrantLock lock = this.lock;
+        lock.lock();
+        try {
+            return (count == 0) ? null : dequeue();
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+   如果队列为空返回 null
+   
+   ##### peek()方法
+   
+       public E peek() {
+        final ReentrantLock lock = this.lock;
+        lock.lock();
+        try {
+            return itemAt(takeIndex); // null when queue is empty
+        } finally {
+            lock.unlock();
+        }
+    }
+   
+   取队头元素
+   
+   ##### remove()方法
+   
+   
+       public boolean remove(Object o) {
+        if (o == null) return false;
+        final Object[] items = this.items;
+        //获取锁
+        final ReentrantLock lock = this.lock;
+        //加锁
+        lock.lock();
+        try {
+            if (count > 0) {
+                final int putIndex = this.putIndex;
+                int i = takeIndex;
+                do {
+                		//遍历数组获取元素
+                    if (o.equals(items[i])) {
+                        removeAt(i);
+                        return true;
+                    }
+                    if (++i == items.length)
+                        i = 0;
+                } while (i != putIndex);
+            }
+            return false;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+   删除元素的方法，时间复杂度为O(n)，可以看出删除元素是十分耗时的，并且还阻塞了队列。
+   
+  
+  # 总结
+  从上面可以看出，这是一个典型的生产消费模式。 ArrayBlockingQueue 和 LinkedBlockingQueue 的区别是，ArrayBlockingQueue 一开始就确定了容器的大小，适合对内存、队列大小有严格要求的场景，LinkedBlockingQueue 是以链表为基础实现的方式，可以不限制队列长度。
+
+
+
+
+
 
 
 
