@@ -4,7 +4,7 @@ title:      "Java 并发之 ArrayBlockingQueue"
 subtitle:   "ArrayBlockingQueue 的实现"
 date:       2017-07-12
 author:     "JianFeng"
-header-img: ""
+header-img: "img/blog/2017-07-30-lock.jpg"
 catalog: true
 tags:
     - Java
