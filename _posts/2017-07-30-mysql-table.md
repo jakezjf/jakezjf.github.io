@@ -4,7 +4,7 @@ title:      "学习数据库分库分表"
 subtitle:   "分库分表的场景"
 date:       2017-07-30
 author:     "JianFeng"
-header-img: "img/blog/2017-07-30-mysql.jpg"
+header-img: "img/blog/2017-07-30-mysql.png"
 catalog: true
 tags:
     - MySQL
