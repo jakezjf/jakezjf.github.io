@@ -81,6 +81,7 @@ ArrayBlockingQueue 构造函数可以传两个参数，capacity 设置数组长�
     
  也可以在初始化 ArrayBlockingQueue 时添加集合元素。
 
+
 ##### size()方法
 
     public int size() {
@@ -111,8 +112,9 @@ ArrayBlockingQueue 构造函数可以传两个参数，capacity 设置数组长�
     }
     
   put()方法可以插入一个元素，采用了中断锁，当 cout == items.length 时，一直阻塞，直到队列有空的位置。
+
   
-  ##### poll()方法
+##### poll()方法
   
      public E poll() {
         final ReentrantLock lock = this.lock;
@@ -125,8 +127,9 @@ ArrayBlockingQueue 构造函数可以传两个参数，capacity 设置数组长�
     }
     
    如果队列为空返回 null
+
    
-   ##### peek()方法
+##### peek()方法
    
        public E peek() {
         final ReentrantLock lock = this.lock;
@@ -140,7 +143,8 @@ ArrayBlockingQueue 构造函数可以传两个参数，capacity 设置数组长�
    
    取队头元素
    
-   ##### remove()方法
+
+##### remove()方法
    
    
        public boolean remove(Object o) {
@@ -173,7 +177,7 @@ ArrayBlockingQueue 构造函数可以传两个参数，capacity 设置数组长�
    删除元素的方法，时间复杂度为O(n)，可以看出删除元素是十分耗时的，并且还阻塞了队列。
    
   
-  # 总结
+# 总结
   从上面可以看出，这是一个典型的生产消费模式。 ArrayBlockingQueue 和 LinkedBlockingQueue 的区别是，ArrayBlockingQueue 一开始就确定了容器的大小，适合对内存、队列大小有严格要求的场景，LinkedBlockingQueue 是以链表为基础实现的方式，可以不限制队列长度。
 
 
